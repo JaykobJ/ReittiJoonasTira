@@ -1,5 +1,5 @@
 - Mitä olen tehnyt tällä viikolla?
-Käynyt läpi eri aiheita ja miettinyt mistä aiheesta tehdä työ. Aiheen valittua pohdin sen toteutusta ja tarkoitusta.
+\nKäynyt läpi eri aiheita ja miettinyt mistä aiheesta tehdä työ. Aiheen valittua pohdin sen toteutusta ja tarkoitusta.
 Etsin internetistä osviittaa työn aiheelle.
 - Miten ohjelma on edistynyt?
 Ohjelmaa en ole vielä tehnyt.
