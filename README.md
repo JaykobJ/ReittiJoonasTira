@@ -1,4 +1,4 @@
 # ReittiJoonasTira
 Tietorakenteet ja algoritmit harjoitustyö
 
-[](dokumentaatio/maarittelydokumentti.md)
+[a](dokumentaatio/maarittelydokumentti.md)
