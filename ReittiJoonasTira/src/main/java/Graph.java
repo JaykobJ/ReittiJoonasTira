@@ -18,6 +18,10 @@ public class Graph {
     
     HashMap<Vertex, HashSet<Vertex>> graph;
     
+    public Graph(){
+        this.graph = new HashMap();
+    }
+    
     //get a neighbor vertex of vector v.
     public Vertex getNeighbor(Vertex v)
     {
@@ -56,7 +60,7 @@ public class Graph {
     
     public void addVertex(Vertex v)
     {
-        if(!this.graph.containsKey(v))
+        if(this.graph.isEmpty() || !this.graph.containsKey(v))
         {
             HashSet<Vertex> neighbors = new HashSet<>();
             this.graph.put(v, neighbors);
@@ -74,4 +78,8 @@ public class Graph {
             this.graph.remove(v);
         }
     }
+    
+//    public void showGraphInfo(){
+//        graph.forEach(v, s)
+//    }
 }

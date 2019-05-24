@@ -24,6 +24,7 @@ public class ReittiJ
         int mapHeight = 0;
         int mapWidth = 0;
         char[][] graph;
+        Graph verkko = new Graph();
         
         //read map info
         try
@@ -70,6 +71,8 @@ public class ReittiJ
                     c = (char) readInt;
                     if(c == '.')
                     {
+                        Vertex v = new Vertex(x, y, c);
+                        verkko.addVertex(v);
                         c = '1';
                     } else if( c == '@'){
                         c = '0';
@@ -89,7 +92,9 @@ public class ReittiJ
                 }
                 System.out.println("");
             }
-        System.out.print("\n");
+            
+            verkko.graph.forEach((vek, set)-> System.out.println("Vertex: " + vek.xCoordinate + vek.yCoordinate ));
+
         } catch(IOException e) {
             e.printStackTrace();
         }
