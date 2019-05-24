@@ -89,4 +89,12 @@ public class Vertex {
                 break;
         }
     }
+    
+    public String toString()
+    {
+        String returnValue = "X value: " + this.xCoordinate +
+                " | Y value: " + this.yCoordinate + " | mark: " + this.marker;
+        
+        return returnValue;
+    }
 }
