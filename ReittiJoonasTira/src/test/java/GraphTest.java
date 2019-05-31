@@ -22,30 +22,30 @@ public class GraphTest {
     @Test
     public void constructorTest()
     {
-        Graph testGraph = new Graph();
+        Graph testGraph = new Graph(4, 4);
         assertNotNull(testGraph.graph);
     }
     
     @Test
     public void addAndRemoveVertex(){
-        Graph testGraph = new Graph();
+        Graph testGraph = new Graph(4, 4);
         Vertex testVertex = new Vertex(3, 2, '.');
-        testGraph.addVertex(testVertex);
-        assertEquals(true, testGraph.graph.containsKey(testVertex));
-        testGraph.removeVertex(testVertex);
-        assertEquals(true, testGraph.graph.isEmpty());
+        testGraph.graph.get(3).add(2, testVertex);
+        assertEquals(testVertex, testGraph.graph.get(3).get(2));
+        testGraph.graph.get(3).remove(2);
+        assertEquals(true, testGraph.graph.get(3).get(2));
     }
     
     @Test
     public void neighborTest()
     {
-        Graph testGraph = new Graph();
+        Graph testGraph = new Graph(4, 4);
         Vertex mainVertex = new Vertex(3, 2, '.');
         Vertex neighborVertex = new Vertex(1, 2, '.');
-        testGraph.addVertex(mainVertex);
-        testGraph.addNeighbor(mainVertex, neighborVertex);
+        Edge e = new Edge(mainVertex, neighborVertex);
+        testGraph.edges.add(e);
         
-        assertEquals(true, testGraph.graph.get(mainVertex).contains(neighborVertex));
+        assertEquals(true, testGraph.edges.contains(e));
     }
     
     
