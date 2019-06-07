@@ -1,7 +1,3 @@
-
-import java.util.HashSet;
-import java.util.Set;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,12 +8,13 @@ import java.util.Set;
  *
  * @author Jaykob
  */
-public class Vertex {
+public class Vertex{
     //class properties
     int xCoordinate;
     int yCoordinate;
     int marker;
-    boolean visited = false;
+    double distance = 99;
+    Vertex parent;
     
     //class constructor
     public Vertex(int x, int y, char mark)
@@ -25,6 +22,7 @@ public class Vertex {
         this.xCoordinate = x;
         this.yCoordinate = y;
         parseMarkerCode(mark);
+        this.parent = null;
     }
     
     public Vertex()
@@ -50,6 +48,16 @@ public class Vertex {
         this.marker = marker;
     }
     
+    public void setDistance(double d)
+    {
+        this.distance = d;
+    }
+    
+    public void setParent(Vertex p)
+    {
+        this.parent = p;
+    }
+    
     //return the vertex x coordinate
     public int getX()
     {
@@ -66,6 +74,23 @@ public class Vertex {
     public int getMarker()
     {
         return this.marker;
+    }
+    
+    public double getDistance()
+    {
+        return this.distance;
+    }
+    
+    public Vertex getParent()
+    {
+        return this.parent;
+    }
+    
+    public boolean hasParent(){
+        if(this.parent != null){
+            return true;
+        }
+        return false;
     }
     
     private void parseMarkerCode(char mark)
@@ -90,11 +115,17 @@ public class Vertex {
         }
     }
     
+    public String coordinates()
+    {
+        return "(" + this.xCoordinate + ", " + this.yCoordinate + ")";
+    }
+    
+    @Override
     public String toString()
     {
-        String returnValue = "X value: " + this.xCoordinate +
-                " | Y value: " + this.yCoordinate + " | mark: " + this.marker;
+        String returnValue = "(" + this.xCoordinate + ", " + this.yCoordinate +
+                ", " + this.marker + ", " + this.distance + ")";
         
         return returnValue;
-    }
+    }  
 }

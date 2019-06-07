@@ -23,14 +23,22 @@ public class VertexTest {
         Vertex testVertex = new Vertex(1, 2, '.');
         assertEquals(1, testVertex.xCoordinate);
         assertEquals(2, testVertex.yCoordinate);
-        assertEquals(1, testVertex.marker);        
+        assertEquals(1, testVertex.marker);    
+        assertEquals(99,0, testVertex.distance);
     }
     
     @Test
     public void toStringTest()
     {
         Vertex testVertex = new Vertex(1, 2, '.');
-        assertEquals("X value: 1 | Y value: 2 | mark: 1", testVertex.toString());
+        assertEquals("(1, 2, 1, 99.0)", testVertex.toString());
+    }
+    
+    @Test
+    public void coordinatesTest()
+    {
+        Vertex testVertex = new Vertex(1, 2, '.');
+        assertEquals("(12)", testVertex.coordinates());
     }
     
     @Test
@@ -38,11 +46,31 @@ public class VertexTest {
     {
         Vertex testVertex = new Vertex(1, 2, '.');
         testVertex.setX(0);
-        assertEquals(0, testVertex.xCoordinate);
+        assertEquals(0, testVertex.getX());
         testVertex.setY(1);
-        assertEquals(1, testVertex.yCoordinate);
+        assertEquals(1, testVertex.getY());
         testVertex.setMarker(0);
-        assertEquals(0, testVertex.marker);
+        assertEquals(0, testVertex.getMarker());
+        testVertex.setDistance(12);
+        assertEquals(12,0, testVertex.getDistance());
+        Vertex parent = new Vertex(6, 6, '@');
+        testVertex.setParent(parent);
+        assertEquals(parent, testVertex.getParent());
+    }
+    
+    @Test
+    public void parseMarkerTest()
+    {
+        Vertex testVertex = new Vertex(1, 1, '.');
+        assertEquals(1, testVertex.getMarker());
+        testVertex = new Vertex(1, 1, 'G');
+        assertEquals(1, testVertex.getMarker());
+        testVertex = new Vertex(1, 1, '@');
+        assertEquals(0, testVertex.getMarker());
+        testVertex = new Vertex(1, 1, 'O');
+        assertEquals(0, testVertex.getMarker());
+        testVertex = new Vertex(1, 1, 'ö');
+        assertEquals(0, testVertex.getMarker());
     }
     
 //    public VertexTest() {
