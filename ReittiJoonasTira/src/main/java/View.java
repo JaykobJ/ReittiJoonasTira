@@ -3,211 +3,196 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import java.awt.Color;
-import java.awt.Graphics;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+
 /**
- *
+ *This class is used to generate visual representation of the search 
+ * algorithm route as GridPane.
+ * 
  * @author Jaykob
  */
-public class View extends JPanel{
-    Vertex[][] map;
-    Vertex end, start;
+public class View extends GridPane
+{
     
-    public View(Vertex[][] graph) {
-        this.map = graph;
-//        setTitle("Shortest path");
-//        setSize(800, 900);
-//        setResizable(rootPaneCheckingEnabled);
-//        setLocationRelativeTo(null);
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //getContentPane().add(new JScrollBar());
-//        setTitle("Shortest path");
-//        setSize(900, 700); 
-//        setLocationRelativeTo(null);
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setLayout(new GridBagLayout());
+    /**
+     * Class constructor. Starts the search algorithm of the Dijkstra class
+     * object and generates GridPane from the updated graph.
+     * 
+     * @param graph 2D Vertex array representation of the graph
+     * @param start Start Vertex
+     * @param end Destination Vertex
+     * @param dij Dijkstra class object
+     */
+    public View(Vertex[][] graph, Vertex start, Vertex end, Dijkstra dij)
+    {
         
+        setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        setHgap(1);
+        setVgap(1);
         
-        //JScrollPane scroll = new JScrollPane(this.rootPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        //setAutoscrolls(true);
-        
-        
-        Dijkstra dijkstra = new Dijkstra();
-        start = map[0][0];
-        end = map[4][4];
-        dijkstra.doDijkstra(map, start, end);
+        dij.doDijkstra(graph, start, end);
+        paintGraph(graph, start, end);
     }
     
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-
-        // draw the maze
-        for (int row = 0; row < map.length; row++) {
-            for (int col = 0; col < map[row].length; col++) {
-                Color color;
+    /**
+     * Class constructor. Starts the search algorithm of the Astar class
+     * object and generates GridPane from the updated graph. 
+     * 
+     * @param graph 2D Vertex array representation of the graph
+     * @param start Start Vertex
+     * @param end Destination Vertex
+     * @param astar Astar class object
+     */
+    public View(Vertex[][] graph, Vertex start, Vertex end, Astar astar)
+    {
+        
+        setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        setHgap(1);
+        setVgap(1);
+        
+        astar.doAStar(graph, start, end);
+        paintGraph(graph, start, end);
+    }
+    
+    /**
+     * Make and paint nodes inside the GridPane to make visual representation
+     * of the graph parameter.
+     * 
+     * @param graph 2D Vertex array. Updated by search algorithm class 
+     * @param start Start Vertex
+     * @param end Destination Vertex
+     */
+    private void paintGraph(Vertex[][] graph, Vertex start, Vertex end){
+        long startTime = System.currentTimeMillis();
+        for(int x = 0; x < graph.length; x++)
+        {
+            for(int y = 0; y < graph[x].length; y++)
+            {
+                Pane canvas = new Pane();
+                canvas.setPrefSize(20,20);
+                canvas.setMinSize(20,20);
+                canvas.setMaxSize(20,20);
                 int marker;
-                if(map[row][col] != null){
-                    marker = map[row][col].marker;
-                }else{
+                if(graph[x][y] != null)
+                {
+                    marker = graph[x][y].marker;
+                }else
+                {
                     marker = 0;
                 }
-                switch (marker) {
-                    case 0 : color = Color.BLACK; break;
-                    case 1 : color = Color.WHITE; break;
-                    default : color = Color.RED;
-                }
-                g.setColor(color);
-                g.fillRect(5 * col, 5 * row, 5, 5);
-                g.setColor(Color.BLACK);
-                g.drawRect(5 * col, 5 * row, 5, 5);
-            }
-        }
-        
-        if(end.hasParent()){
-            g.setColor(Color.RED);
-            g.fillRect(end.getY() * 5, end.getX() * 5, 5, 5);
-            g.setColor(Color.BLACK);
-            g.drawRect(end.getY() * 5, end.getX() * 5, 5, 5);
-            showPath(g, end.getParent());
-        }
-    }
-    
-    private void showPath(Graphics g, Vertex v){
-        g.setColor(Color.GREEN);
-        g.fillRect(v.getY() * 5, v.getX() * 5, 5, 5);
-        g.setColor(Color.BLACK);
-        g.drawRect(v.getY() * 5, v.getX() * 5, 5, 5);
-        if(v.hasParent()){
-            showPath(g, v.getParent());
-        }
-        else{
-            g.setColor(Color.BLUE);
-            g.fillRect(v.getY() * 5, v.getX() * 5, 5, 5);
-            g.setColor(Color.BLACK);
-            g.drawRect(v.getY() * 5, v.getX() * 5, 5, 5);
-        }
-    }
-    
-    public static void main(String[] args) {
-        
-        BufferedReader reader;    
-        String mapType;
-        int mapHeight = 0;
-        int mapWidth = 0;
-        Vertex[][] map;
-        
-        //read map info
-        try
-        {   
-            //initialize file reader
-            reader = new BufferedReader(new FileReader("random512-20-0.map"));
-            
-            //read map information
-            for(int i = 0; i < 4; i++)
-            {
-                String line = reader.readLine();
-
-                switch(i){
-                    case 0:
-                        mapType = line;
-                        System.out.println("Map: " + mapType);
-                        break;
-                    case 1:
-                        mapHeight = digitFromLine(line);
-                        System.out.println("Map Height: " + mapHeight);
-                        break;
-                    case 2:
-                        mapWidth = digitFromLine(line);
-                        System.out.println("Map Width: " + mapWidth);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            
-            //make map
-            map = new Vertex[mapHeight][mapWidth];
-            
-            char c;
-            
-            for(int x = 0; x < mapHeight; x++)
-            {
-                for(int y = 0; y < mapWidth; y++)
+                switch (marker) 
                 {
-                    int readInt = reader.read();
-                    
-                    //continue reading when reaching end of the line
-                    while(readInt == 10 || readInt == 13)
-                    {
-                        readInt =reader.read();
-                    }
-                    
-                    c = (char) readInt;
-                    if(c == '.')
-                    {
-                        Vertex v = new Vertex(x, y, c);
-                        map[x][y] = v;
-                    } else if( c == '@'){
-                        map[x][y] = null;
-                    } 
+                    case 0 : 
+                        canvas.setStyle("-fx-background-color: black;");
+                        add(canvas, y, x);
+                        break;
+                    case 1 : 
+                        canvas.setStyle("-fx-background-color: white;");
+                        add(canvas, y, x);
+                        break;
+                    case 2 : 
+                        canvas.setStyle("-fx-background-color: blue;");
+                        add(canvas, y, x);
+                        break;
+                    default : 
+                        canvas.setStyle("-fx-background-color: red;");
+                        add(canvas, y, x);
+                        break;
                 }
             }
-            reader.close();       
-            
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    View view = new View(map);
-
-                    JScrollPane pane = new JScrollPane(view);
-                    pane.createHorizontalScrollBar();
-                    pane.createVerticalScrollBar();
-                    JFrame frame = new JFrame();
-                    frame.add(pane);
-                    frame.setTitle("Shortest path");
-                    frame.setSize(900, 700); 
-                    frame.setLocationRelativeTo(null);
-                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    
-                    frame.setVisible(true);
-                }
-            });
-            //Vertex start = map[0][19];
-            //Vertex end = map[1][15];
-            //Dijkstra dijkstra = new Dijkstra();
-            //long startTime = System.currentTimeMillis();
-            //dijkstra.doDijkstra(map, start, end);
-            //long endTime = System.currentTimeMillis();
-            //System.out.println("Total distance is: " + dijkstra.distance);
-            //System.out.println("Total time to get shortest path: " + (endTime - startTime) + " ms");
-
-        } catch(IOException e) {
-            e.printStackTrace();
+        }
+        if(end.hasParent())
+        {
+            Pane canvas = new Pane();
+            canvas.setPrefSize(20,20);
+            canvas.setMinSize(20,20);
+            canvas.setMaxSize(20,20);
+            canvas.setStyle("-fx-background-color: red;");
+            add(canvas, end.getY(), end.getX());
+            showPath(end.getParent());
+        }
+        long endTime = System.currentTimeMillis();
+        long timer = endTime - startTime;
+        System.out.println("------ TIME TO DRAW GRAPH ------ " + timer + "ms");
+    }
+    
+    /**
+     * Paints the path nodes from end node to green. When the final node is 
+     * reached (start node) paint it pink
+     * 
+     * @param v shortest path Vertex
+     */
+    private void showPath(Vertex v)
+    {
+        Pane canvas = new Pane();
+        canvas.setPrefSize(20,20);
+        canvas.setMinSize(20,20);
+        canvas.setMaxSize(20,20);
+        canvas.setStyle("-fx-background-color: green;");
+        add(canvas, v.getY(), v.getX());
+        if(v.hasParent())
+        {
+            showPath(v.getParent());
+        }
+        else
+        {
+            canvas.setStyle("-fx-background-color: pink;");
         }
     }
     
-    private static int digitFromLine(String line)
+    /**
+     * Make and paint nodes inside the GridPane to make visual representation
+     * of the empty(without path) graph.
+     * 
+     * @param graph 2D Vertex array representation of the graph
+     */
+    public View (Vertex[][] graph)
+    {
+        long startTime = System.currentTimeMillis();
+        setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        setHgap(1);
+        setVgap(1);
+        
+        for(int x = 0; x < graph.length; x++)
         {
-            try
+            for(int y = 0; y < graph[x].length; y++)
             {
-                Pattern p = Pattern.compile("\\d+"); 
-                Matcher m = p.matcher(line);
-                if(m.find()){
-                    return (Integer.parseInt(m.group()));
+                Pane canvas = new Pane();
+                canvas.setPrefSize(20,20);
+                canvas.setMinSize(20,20);
+                canvas.setMaxSize(20,20);
+                int marker;
+                if(graph[x][y] != null)
+                {
+                    marker = graph[x][y].marker;
+                }else
+                {
+                    marker = 0;
                 }
-            } catch (Exception e){
-                e.printStackTrace();
+                switch (marker) 
+                {
+                    case 0 : 
+                        canvas.setStyle("-fx-background-color: black;");
+                        add(canvas, y, x);
+                        break;
+                    case 1 : 
+                        canvas.setStyle("-fx-background-color: white;");
+                        add(canvas, y, x);
+                        break;
+                    default : 
+                        canvas.setStyle("-fx-background-color: red;");
+                        add(canvas, y, x);
+                        break;
+                }
             }
-            return 0;
         }
+        long endTime = System.currentTimeMillis();
+        long timer = endTime - startTime;
+        System.out.println("------ TIME TO DRAW empty GRAPH ------ " + timer + "ms");
+    }
 }

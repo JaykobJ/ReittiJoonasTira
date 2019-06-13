@@ -3,19 +3,22 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 /**
- * This class is used to find the shortest path using dijkstras algorithm.
- * The dijkstras algorithm here is modified so that it stops searching 
- * when it finds the end of the path (in this particular program the end 
- * of the path is a Vertex)
+ * This class is used to find the shortest path using A* algorithm.
  * 
  * @author Jaykob
  */
-public class Dijkstra 
+public class Astar
 {
     Comparator<Vertex> vertexComparator = (Vertex v1, Vertex v2) -> 
     {
-        return (int)((v1.getDistance() - v2.getDistance())*100);
+        return (int)((v1.getFCost() - v2.getFCost())*100);
     };
     PriorityQueue<Vertex> mpq; //Minimum-priority Queue
     Set<Vertex> s; //Set for finished shortest path objects
@@ -27,11 +30,12 @@ public class Dijkstra
     final double maxValue = 99999;
     
     /**
-     * Constructor for the Dijkstra class. Calling this method creates a new
+     * Constructor for the A* class. Calling this method creates a new
      * empty HashSet and empty PrioityQueue. The PrirorityQueue compares 
-     * the objects (Vertex) distance value.
+     * the objects (Vertex) fCost value. fCost = distance from starting Vertex
+     * + estimated distance from the end Vertex (Heuristic value).
      */
-    public Dijkstra()
+    public Astar()
     {
         this.s = new HashSet();
         this.mpq = new PriorityQueue(vertexComparator);
@@ -45,16 +49,18 @@ public class Dijkstra
      * @param start starting Vertex.
      * @param end Vertex to be searched for.
      */
-    public void doDijkstra(Vertex[][] map, Vertex start, Vertex end)
+    public void doAStar(Vertex[][] map, Vertex start, Vertex end)
     {
         long startTime = System.currentTimeMillis();
         endFound = false;
         this.graph = map;
         
         start.setDistance(0); //set start Vertex dinstance to 0
+        start.setFCost(0); //set fCost to 0
         mpq.add(start);
         
-        //Setting distance to 99 999 to all objects except start object
+        //Setting distance and fCost to 99 999 to all objects
+        //except start object
         for(Vertex[] row : graph)
         {
             for(int i = 0; i < row.length; i++)
@@ -63,6 +69,7 @@ public class Dijkstra
                 {
                     if(!row[i].equals(start))
                     {
+                        row[i].setFCost(maxValue);
                         row[i].setDistance(maxValue);
                     }
                 }
@@ -88,12 +95,13 @@ public class Dijkstra
      * Checks the edges between current Vertex and all it's 8 neighbour
      * Vertex (Skips Vertex that all ready have shortest path and are in 
      * set S and skips Vertices that are out of bounds).
-     * If there is edge between the 2 Vertices updates the neighbour
-     * Vertex distance attribute and add the neighbour Vertex to the
-     * minimum-priority queue. If the neighbour Vertex is the destination then
+     * If there is edge between the 2 Vertices, compares if the new fCost 
+     * is smaller than the current fCost if so then update the neighbours fCost,
+     * distance and add it to priority queue.
+     * If the neighbour Vertex is the destination then
      * change endFound to true and jump out of the loop.
      * If the neighbour Vertex is all ready in minimum-priority queue and it's 
-     * distance is updated then it is added to the priority queue again. This
+     * fCost is updated then it is added to the priority queue again. This
      * is done because updating specific object in the priority queue takes O(n)
      * time and changing the attribute of an object doesn't change the order
      * inside the priority queue.
@@ -117,28 +125,31 @@ public class Dijkstra
             int nY = current.yCoordinate + yPos[i]; //neighbor y coordinate
             
             //if neighbor vertex is not out of graph bounds realx the edges
-            if((nX >= 0 && nY >= 0) && (nX < graph.length && 
-                    nY < graph[cX].length) && graph[nX][nY] != null)
+            if((nX >= 0 && nY >= 0) && (nX < graph.length && nY < graph[cX].length) && graph[nX][nY] != null)
             {
                 neighbor = graph[nX][nY];
                 if(!s.contains(neighbor))
                 {
+                    //update heuristic value
+                    neighbor.setHeuristic(end, diagonalWeight, hvWeight);
+                    neighbor.tie(); //used to narrow down the searched area
                     //weigh is 1 if neighbor vertex is above, below,
                     //left or right to the current vertex
                     if(cX == nX || cY == nY)
                     {
                         if(neighbor.equals(end))
                         {
-                            neighbor.setDistance(current.distance + hvWeight);
+                            neighbor.setDistance(current.getDistance() + hvWeight);
                             neighbor.setParent(current);
                             printRoute(neighbor); //print route
                             endFound = true;
                             break;
                         }
-                        else if((current.distance + hvWeight) < neighbor.distance)
+                        else if((current.getDistance() + neighbor.getHeurictic()) < neighbor.getFCost())
                         {
                             neighbor.setDistance(current.distance + hvWeight);
                             neighbor.setParent(current);
+                            neighbor.setFCost(current.distance);
                             mpq.add(neighbor);
                             neighbor.setMarker(2); //Marked as visited Vertex
                         }
@@ -149,18 +160,19 @@ public class Dijkstra
                     {
                         if(neighbor.equals(end))
                         {
-                            neighbor.setDistance(current.distance + diagonalWeight);
+                            neighbor.setDistance(current.getDistance() + diagonalWeight);
                             neighbor.setParent(current);
-                            printRoute(neighbor);//print route
+                            printRoute(neighbor); //print route
                             endFound = true;
                             break;
                         }
-                        else if((current.distance + diagonalWeight) < neighbor.distance)
+                        else if((current.getDistance() + neighbor.getHeurictic()) < neighbor.getFCost())
                         {
                             neighbor.setDistance(current.distance + diagonalWeight);
                             neighbor.setParent(current);
+                            neighbor.setFCost(current.distance);
                             mpq.add(neighbor);
-                            neighbor.setMarker(2);//Marked as visited Vertex
+                            neighbor.setMarker(2); //Marked as visited Vertex
                         }
                     }
                 }
@@ -174,7 +186,7 @@ public class Dijkstra
      * 
      * @param v Vertex witch parent is to be printed
      */
-    public void printRoute(Vertex v)
+    private void printRoute(Vertex v)
     {
         System.out.print(v.coordinates());
         if(v.hasParent())
@@ -195,7 +207,7 @@ public class Dijkstra
     public Vertex getVertex(int x, int y)
     {
         return this.graph[x][y];
-    }
+    } 
     
     /**
      * Returns boolean value if the end Vertex was found or not

@@ -36,4 +36,12 @@ jacocoTestReport {
     }
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'ReittiJ.java'
+        )
+    }
+}
+
 check.dependsOn jacocoTestReport

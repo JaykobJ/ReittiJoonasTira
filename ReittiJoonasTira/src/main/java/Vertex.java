@@ -13,7 +13,9 @@ public class Vertex{
     int xCoordinate;
     int yCoordinate;
     int marker;
-    double distance = 99;
+    double distance; //distance form the start vertex
+    double heuristic; //distance from the end vertex
+    double fCost; //function cost of distance + heuristic
     Vertex parent;
     
     //class constructor
@@ -53,6 +55,24 @@ public class Vertex{
         this.distance = d;
     }
     
+    public void setHeuristic(Vertex end, double diagonalWeight, double hvWeight)
+    {
+        int dx = Math.abs(this.getX() - end.getX()); //distance from end x-coordinate
+        int dy = Math.abs(this.getY() - end.getY()); //distance from end y-coordinate
+        
+        this.heuristic = hvWeight * (dx + dy) + (diagonalWeight - 2 * hvWeight) * Math.min(dx, dy);
+    }
+    
+    public void tie()
+    {
+        this.heuristic *= (this.heuristic * (1 + 1/500));
+    }
+    
+    public void setFCost(double d)
+    {
+        this.fCost = d + this.heuristic;
+    }
+    
     public void setParent(Vertex p)
     {
         this.parent = p;
@@ -79,6 +99,16 @@ public class Vertex{
     public double getDistance()
     {
         return this.distance;
+    }
+    
+    public double getHeurictic()
+    {
+        return this.heuristic;
+    }
+    
+    public double getFCost()
+    {
+        return this.fCost;
     }
     
     public Vertex getParent()
@@ -124,8 +154,14 @@ public class Vertex{
     public String toString()
     {
         String returnValue = "(" + this.xCoordinate + ", " + this.yCoordinate +
-                ", " + this.marker + ", " + this.distance + ")";
+                ", " + toTwoDecimal(this.distance) + ")";
         
         return returnValue;
     }  
+    
+    private double toTwoDecimal(double d)
+    {
+        d = Math.round(d*100);
+        return d/100;
+    }
 }
