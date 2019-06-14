@@ -8,6 +8,8 @@
 //import org.junit.AfterClass;
 //import org.junit.Before;
 //import org.junit.BeforeClass;
+import OwnObjects.Vertex;
+import Algoritm.Astar;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -51,23 +53,6 @@ public class AstarTest {
         astar.doAStar(testFailMap, start, end);
         
         assertEquals(false, astar.endFound());
-    }
-    
-    @Test
-    public void usesCorrect2DArray()
-    {
-        Astar astar = new Astar();
-        Vertex start = testMap[0][0];
-        Vertex end = testMap[2][2];
-        astar.doAStar(testMap, start, end);
-        
-        Vertex[][] usedGraph = astar.graph;
-        
-        for(int x = 0; x < testMap.length; x++){
-            for(int y = 0; y < testMap[x].length; y++){
-                assertEquals(testMap[x][y], usedGraph[x][y]);
-            }
-        }
     }
     
 //    public AstarTest() {

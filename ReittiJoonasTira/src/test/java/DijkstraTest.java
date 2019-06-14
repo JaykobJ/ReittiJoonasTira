@@ -8,6 +8,8 @@
 //import org.junit.AfterClass;
 //import org.junit.Before;
 //import org.junit.BeforeClass;
+import OwnObjects.Vertex;
+import Algoritm.Dijkstra;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -51,23 +53,6 @@ public class DijkstraTest {
         dij.doDijkstra(testFailMap, start, end);
         
         assertEquals(false, dij.endFound());
-    }
-    
-    @Test
-    public void usesCorrect2DArray()
-    {
-        Dijkstra dij = new Dijkstra();
-        Vertex start = testMap[0][0];
-        Vertex end = testMap[2][2];
-        dij.doDijkstra(testMap, start, end);
-        
-        Vertex[][] usedGraph = dij.graph;
-        
-        for(int x = 0; x < testMap.length; x++){
-            for(int y = 0; y < testMap[x].length; y++){
-                assertEquals(testMap[x][y], usedGraph[x][y]);
-            }
-        }
     }
     
 //    public DijkstraTest() {

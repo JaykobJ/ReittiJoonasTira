@@ -39,7 +39,7 @@ jacocoTestReport {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'ReittiJ.java'
+                'Main-Class': 'ReittiJ'
         )
     }
 }
