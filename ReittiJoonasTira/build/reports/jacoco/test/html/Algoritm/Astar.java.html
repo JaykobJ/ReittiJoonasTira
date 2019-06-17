@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Astar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ReittiJoonasTira</a> &gt; <a href="index.source.html" class="el_package">Algoritm</a> &gt; <span class="el_source">Astar.java</span></div><h1>Astar.java</h1><pre class="source lang-java linenums">package Algoritm;
+
+import OwnObjects.Vertex;
+import DataStructure.AlgoMinPrioQueue;
+import DataStructure.AlgoSet;
+import java.util.Comparator;
+
+/**
+ * This class is used to find the shortest path using A* algorithm.
+ * 
+ * @author Jaykob
+ */
+public class Astar
+{
+<span class="fc" id="L15">    Comparator&lt;Vertex&gt; vertexComparator = (Vertex v1, Vertex v2) -&gt; </span>
+    {
+<span class="fc" id="L17">        return (int)((v1.getFCost() - v2.getFCost())*100);</span>
+    };
+    AlgoMinPrioQueue mpq;
+    AlgoSet s;
+    Vertex[][] graph; //2D array to be searched
+    boolean endFound;
+<span class="fc" id="L23">    final double hvWeight = 1; //Weight for horizontal and Vertical movement</span>
+<span class="fc" id="L24">    final double diagonalWeight = Math.sqrt(2); //Weight for diagonal movement</span>
+    long timer; //Time for the algorithm to run from start to finish
+<span class="fc" id="L26">    final double maxValue = Double.MAX_VALUE;</span>
+    
+    /**
+     * Constructor for the A* class.
+     */
+    public Astar()
+<span class="fc" id="L32">    {</span>
+        
+<span class="fc" id="L34">    }</span>
+    
+    /**
+     * Method to search the shortest path from start Vertex to the end Vertex.
+     * Updates the class attributes information after it is done. The 
+     * PrirorityQueue compares the objects (Vertex) fCost value. 
+     * fCost = distance from starting Vertex + estimated distance from the
+     * end Vertex (Heuristic value).
+     * 
+     * @param map 2d Array for Vertex objects.
+     * @param start starting Vertex.
+     * @param end Vertex to be searched for.
+     */
+    public void doAStar(Vertex[][] map, Vertex start, Vertex end)
+    {
+<span class="fc" id="L49">        this.mpq = new AlgoMinPrioQueue(map.length, map[0].length, this.vertexComparator);</span>
+<span class="fc" id="L50">        this.s = new AlgoSet(map.length, map[0].length);</span>
+<span class="fc" id="L51">        endFound = false;</span>
+<span class="fc" id="L52">        this.graph = map;</span>
+<span class="fc" id="L53">        long startTime = System.currentTimeMillis();</span>
+        
+<span class="fc" id="L55">        start.setDistance(0); //set start Vertex dinstance to 0</span>
+<span class="fc" id="L56">        start.setFCost(0); //set fCost to 0</span>
+<span class="fc" id="L57">        mpq.add(start);</span>
+        
+        //Setting distance and fCost to 99 999 to all objects
+        //except start object
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for(Vertex[] row : graph)</span>
+        {
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            for(int i = 0; i &lt; row.length; i++)</span>
+            {
+<span class="fc bfc" id="L65" title="All 2 branches covered.">                if(row[i] != null)</span>
+                {
+<span class="fc bfc" id="L67" title="All 2 branches covered.">                    if(!row[i].equals(start))</span>
+                    {
+<span class="fc" id="L69">                        row[i].setFCost(maxValue);</span>
+<span class="fc" id="L70">                        row[i].setDistance(maxValue);</span>
+                    }
+                }
+            }
+        }
+        //remove vertex with minimum priority untill destination Vertex is found
+<span class="fc bfc" id="L76" title="All 4 branches covered.">        while(!mpq.isEmpty() &amp;&amp; endFound == false)</span>
+        {
+<span class="fc" id="L78">            Vertex current = mpq.remove();</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">            if(current.equals(end))</span>
+            {
+<span class="nc" id="L81">                endFound = true;</span>
+<span class="nc" id="L82">                continue;</span>
+            }
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">            if(s.contains(current))</span>
+            {
+<span class="nc" id="L86">                continue;</span>
+            }
+<span class="fc" id="L88">            s.add(current);</span>
+<span class="fc" id="L89">            relaxEdges(current, end);</span>
+<span class="fc" id="L90">        }</span>
+<span class="fc" id="L91">        long endTime = System.currentTimeMillis();</span>
+<span class="fc" id="L92">        this.timer = endTime - startTime;</span>
+<span class="fc" id="L93">    }</span>
+    
+    /**
+     * Checks the edges between current Vertex and all it's 8 neighbour
+     * Vertex (Skips Vertex that all ready have shortest path and are in 
+     * set S and skips Vertices that are out of bounds).
+     * If there is edge between the 2 Vertices, compares if the new fCost 
+     * is smaller than the current fCost if so then update the neighbours fCost,
+     * distance and add it to priority queue.
+     * If the neighbour Vertex is the destination then
+     * change endFound to true and jump out of the loop.
+     * If the neighbour Vertex is all ready in minimum-priority queue and it's 
+     * fCost is updated then it is added to the priority queue again. This
+     * is done because updating specific object in the priority queue takes O(n)
+     * time
+     * 
+     * @param current Current Vertex witch neighbours are to be checked 
+     * @param end Destination Vertex
+     */
+    private void relaxEdges(Vertex current, Vertex end)
+    {
+        //neighbor positions in all directions of graph
+        //checking clockwise starting from above
+<span class="fc" id="L116">        int[] xPos = {-1, -1, 0, 1, 1, 1, 0, -1};</span>
+<span class="fc" id="L117">        int[] yPos = {0, 1, 1, 1, 0, -1, -1, -1};</span>
+<span class="fc" id="L118">        int cX = current.getX();</span>
+<span class="fc" id="L119">        int cY = current.getY();</span>
+        Vertex neighbor;
+
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        for(int i = 0; i &lt; xPos.length; i++)</span>
+        {
+<span class="fc" id="L124">            int nX = current.getX() + xPos[i]; //neighbor x coordinate</span>
+<span class="fc" id="L125">            int nY = current.getY() + yPos[i]; //neighbor y coordinate</span>
+            
+            //if neighbor vertex is not out of graph bounds realx the edges
+<span class="fc bfc" id="L128" title="All 10 branches covered.">            if((nX &gt;= 0 &amp;&amp; nY &gt;= 0) &amp;&amp; (nX &lt; graph.length &amp;&amp; nY &lt; graph[cX].length) &amp;&amp; graph[nX][nY] != null)</span>
+            {
+<span class="fc" id="L130">                neighbor = graph[nX][nY];</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">                if(!s.contains(neighbor))</span>
+                {
+                    //update heuristic value
+<span class="fc" id="L134">                    neighbor.setHeuristic(end, diagonalWeight, hvWeight);</span>
+<span class="fc" id="L135">                    neighbor.tie(); //used to narrow down the searched area</span>
+                    //weigh is 1 if neighbor vertex is above, below,
+                    //left or right to the current vertex
+<span class="fc bfc" id="L138" title="All 4 branches covered.">                    if(cX == nX || cY == nY)</span>
+                    {
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">                        if(neighbor.equals(end))</span>
+                        {
+<span class="nc" id="L142">                            neighbor.setDistance(current.getDistance() + hvWeight);</span>
+<span class="nc" id="L143">                            neighbor.setParent(current);</span>
+                            //printRoute(neighbor); //print route
+<span class="nc" id="L145">                            endFound = true;</span>
+<span class="nc" id="L146">                            break;</span>
+                        }
+<span class="fc bfc" id="L148" title="All 2 branches covered.">                        else if((current.getDistance() + neighbor.getHeurictic()) &lt; neighbor.getFCost())</span>
+                        {
+<span class="fc" id="L150">                            neighbor.setDistance(current.getDistance() + hvWeight);</span>
+<span class="fc" id="L151">                            neighbor.setParent(current);</span>
+<span class="fc" id="L152">                            neighbor.setFCost(current.getDistance());</span>
+<span class="fc" id="L153">                            mpq.add(neighbor);</span>
+<span class="fc" id="L154">                            neighbor.setMarker(2); //Marked as visited Vertex</span>
+                        }
+                    }
+                    //weight is sqrt(2) if neighbor vertex is located
+                    //diagonally to current vertex
+                    else
+                    {
+<span class="fc bfc" id="L161" title="All 2 branches covered.">                        if(neighbor.equals(end))</span>
+                        {
+<span class="fc" id="L163">                            neighbor.setDistance(current.getDistance() + diagonalWeight);</span>
+<span class="fc" id="L164">                            neighbor.setParent(current);</span>
+                            //printRoute(neighbor); //print route
+<span class="fc" id="L166">                            endFound = true;</span>
+<span class="fc" id="L167">                            break;</span>
+                        }
+<span class="fc bfc" id="L169" title="All 2 branches covered.">                        else if((current.getDistance() + neighbor.getHeurictic()) &lt; neighbor.getFCost())</span>
+                        {
+<span class="fc" id="L171">                            neighbor.setDistance(current.getDistance() + diagonalWeight);</span>
+<span class="fc" id="L172">                            neighbor.setParent(current);</span>
+<span class="fc" id="L173">                            neighbor.setFCost(current.getDistance());</span>
+<span class="fc" id="L174">                            mpq.add(neighbor);</span>
+<span class="fc" id="L175">                            neighbor.setMarker(2); //Marked as visited Vertex</span>
+                        }
+                    }
+                }
+            }
+        }
+<span class="fc" id="L181">    } </span>
+    
+    /**
+     * Prints the route from end Vertex to start Vertex by recursively
+     * printing the parent Vertex coordinates to command line.
+     * 
+     * @param v Vertex witch parent is to be printed
+     */
+    private void printRoute(Vertex v)
+    {
+        //System.out.print(v.coordinates());
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        if(v.hasParent())</span>
+        {
+<span class="nc" id="L194">            printRoute(v.getParent());</span>
+        }
+<span class="nc" id="L196">    }</span>
+    
+    /**
+     * Method to get specific Vertex from this class.
+     * This is mainly used because the Vertex attributes differ from the 
+     * other search algorithm classes
+     * 
+     * @param x The Vertex X coordinate 
+     * @param y The Vertex Y coordinate
+     * @return Vertex
+     */
+    public Vertex getVertex(int x, int y)
+    {
+<span class="nc" id="L209">        return this.graph[x][y];</span>
+    } 
+    
+    /**
+     * Returns boolean value if the end Vertex was found or not
+     * 
+     * @return boolean value
+     */
+    public boolean endFound()
+    {
+<span class="fc" id="L219">        return this.endFound;</span>
+    }
+    
+    /**
+     * Returns time consumed (ms) by the algorithm to finish
+     * 
+     * @return long value
+     */
+    public long getTimer()
+    {
+<span class="nc" id="L229">        return this.timer;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

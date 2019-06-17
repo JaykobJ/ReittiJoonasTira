@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AlgorithmTesting.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ReittiJoonasTira</a> &gt; <a href="index.source.html" class="el_package">Testing</a> &gt; <span class="el_source">AlgorithmTesting.java</span></div><h1>AlgorithmTesting.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Testing;
+
+import Algoritm.Astar;
+import Algoritm.Dijkstra;
+import OwnObjects.Vertex;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ *
+ * @author Jaykob
+ */
+<span class="nc" id="L21">public class AlgorithmTesting {</span>
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) 
+    {
+<span class="nc" id="L28">        astarTestMethod(&quot;testMap1.map&quot;);</span>
+<span class="nc" id="L29">        astarTestMethod(&quot;testMap2.map&quot;);</span>
+<span class="nc" id="L30">        astarTestMethod(&quot;testMap3.map&quot;);</span>
+<span class="nc" id="L31">        astarTestMethod(&quot;testMap4.map&quot;);</span>
+<span class="nc" id="L32">        astarTestMethod(&quot;testMap5.map&quot;);</span>
+<span class="nc" id="L33">        astarTestMethod(&quot;testMap6.map&quot;);</span>
+<span class="nc" id="L34">        astarTestMethod(&quot;testMap7.map&quot;);</span>
+<span class="nc" id="L35">        astarTestMethod(&quot;testMap8.map&quot;);</span>
+<span class="nc" id="L36">        dijkstraTestMethod(&quot;testMap1.map&quot;);</span>
+<span class="nc" id="L37">        dijkstraTestMethod(&quot;testMap2.map&quot;);</span>
+<span class="nc" id="L38">        dijkstraTestMethod(&quot;testMap3.map&quot;);</span>
+<span class="nc" id="L39">        dijkstraTestMethod(&quot;testMap4.map&quot;);</span>
+<span class="nc" id="L40">        dijkstraTestMethod(&quot;testMap5.map&quot;);</span>
+<span class="nc" id="L41">        dijkstraTestMethod(&quot;testMap6.map&quot;);</span>
+<span class="nc" id="L42">        dijkstraTestMethod(&quot;testMap7.map&quot;);</span>
+<span class="nc" id="L43">        dijkstraTestMethod(&quot;testMap8.map&quot;);</span>
+<span class="nc" id="L44">    }</span>
+    
+    private static void astarTestMethod(String mapName)
+    {
+<span class="nc" id="L48">        String mapFile = mapName;</span>
+<span class="nc" id="L49">        long[] timeArray = new long[20];</span>
+<span class="nc" id="L50">        Vertex[][] map = readMap(mapFile);</span>
+<span class="nc" id="L51">        int size = map.length;</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        for(int i = 0; i &lt; timeArray.length; i++)</span>
+        {
+<span class="nc" id="L54">            Astar astar = new Astar();</span>
+<span class="nc" id="L55">            map = readMap(mapFile);</span>
+<span class="nc" id="L56">            astar.doAStar(map, map[map.length/2][map[0].length/2], map[map.length-1][map[0].length-1]);</span>
+<span class="nc" id="L57">            timeArray[i] = astar.getTimer();</span>
+<span class="nc" id="L58">            sleep(50);</span>
+        }
+<span class="nc" id="L60">        long timeSum = 0;</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        for(int i = 0; i &lt; timeArray.length; i++)</span>
+        {
+<span class="nc" id="L63">            System.out.print(timeArray[i]+&quot;, &quot;);</span>
+<span class="nc" id="L64">            timeSum += timeArray[i];</span>
+        }
+<span class="nc" id="L66">        System.out.println(&quot;&quot;);</span>
+<span class="nc" id="L67">        System.out.println(&quot;--A*-- For map '&quot;+mapName+&quot;' | size(&quot;+size+&quot;*&quot;+size+&quot;): aprox time &quot;+timeSum/timeArray.length+&quot;ms&quot;);</span>
+<span class="nc" id="L68">    }</span>
+    
+    private static void dijkstraTestMethod(String mapName)
+    {
+<span class="nc" id="L72">        String mapFile = mapName;</span>
+<span class="nc" id="L73">        long[] timeArray = new long[20];</span>
+<span class="nc" id="L74">        Vertex[][] map = readMap(mapFile);</span>
+<span class="nc" id="L75">        int size = map.length;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        for(int i = 0; i &lt; timeArray.length; i++)</span>
+        {         
+<span class="nc" id="L78">            Dijkstra dijkstra = new Dijkstra();</span>
+<span class="nc" id="L79">            map = readMap(mapFile);</span>
+<span class="nc" id="L80">            dijkstra.doDijkstra(map, map[map.length/2][map[0].length/2], map[map.length-1][map[0].length-1]);</span>
+<span class="nc" id="L81">            timeArray[i] = dijkstra.getTimer();</span>
+<span class="nc" id="L82">            sleep(50);</span>
+        }
+<span class="nc" id="L84">        long timeSum = 0;</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        for(int i = 0; i &lt; timeArray.length; i++)</span>
+        {
+<span class="nc" id="L87">            System.out.print(timeArray[i]+&quot;, &quot;);</span>
+<span class="nc" id="L88">            timeSum += timeArray[i];</span>
+        }
+<span class="nc" id="L90">        System.out.println(&quot;&quot;);</span>
+<span class="nc" id="L91">        System.out.println(&quot;--Dijkstra-- For map '&quot;+mapName+&quot;' | size(&quot;+size+&quot;*&quot;+size+&quot;): aprox time &quot;+timeSum/timeArray.length+&quot;ms&quot;);</span>
+<span class="nc" id="L92">    }</span>
+        
+    private static Vertex[][] readMap(String mapFile)
+    {
+<span class="nc" id="L96">        long startTime = System.currentTimeMillis();</span>
+        BufferedReader reader;    
+        String mapType;
+<span class="nc" id="L99">        int mapHeight = 0;</span>
+<span class="nc" id="L100">        int mapWidth = 0;</span>
+<span class="nc" id="L101">        Vertex[][] map = new Vertex[mapHeight][mapWidth];</span>
+        
+        //read map info
+        try
+        {   
+            //initialize file reader
+<span class="nc" id="L107">            reader = new BufferedReader(new FileReader(mapFile));</span>
+            
+            //read map information. 4 first lines
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            for(int i = 0; i &lt; 4; i++)</span>
+            {
+<span class="nc" id="L112">                String line = reader.readLine();</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">                switch(i){</span>
+                    case 0:
+<span class="nc" id="L115">                        mapType = line;</span>
+                        //System.out.println(&quot;Map: &quot; + mapType);
+<span class="nc" id="L117">                        break;</span>
+                    case 1:
+<span class="nc" id="L119">                        mapHeight = digitFromLine(line);</span>
+                        //System.out.println(&quot;Map Height: &quot; + mapHeight);
+<span class="nc" id="L121">                        break;</span>
+                    case 2:
+<span class="nc" id="L123">                        mapWidth = digitFromLine(line);</span>
+                        //System.out.println(&quot;Map Width: &quot; + mapWidth);
+<span class="nc" id="L125">                        break;</span>
+                    default:
+                        break;
+                }
+            }
+            
+            //make map
+<span class="nc" id="L132">            map = new Vertex[mapHeight][mapWidth];</span>
+            char c;
+            
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            for(int x = 0; x &lt; mapHeight; x++)</span>
+            {
+<span class="nc bnc" id="L137" title="All 2 branches missed.">                for(int y = 0; y &lt; mapWidth; y++)</span>
+                {
+<span class="nc" id="L139">                    int readInt = reader.read();</span>
+                    
+                    //continue reading when reaching end of the line
+<span class="nc bnc" id="L142" title="All 4 branches missed.">                    while(readInt == 10 || readInt == 13)</span>
+                    {
+<span class="nc" id="L144">                        readInt =reader.read();</span>
+                    }
+                    
+<span class="nc" id="L147">                    c = (char) readInt;</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">                    if(c == '.' || c == 'G')</span>
+                    {
+<span class="nc" id="L150">                        Vertex v = new Vertex(x, y, c);</span>
+<span class="nc" id="L151">                        map[x][y] = v;</span>
+<span class="nc" id="L152">                    } else </span>
+                    {
+<span class="nc" id="L154">                        map[x][y] = null;</span>
+                    } 
+                }
+            }
+            
+<span class="nc" id="L159">            reader.close();</span>
+
+<span class="nc" id="L161">        } catch(IOException e) {</span>
+<span class="nc" id="L162">            e.printStackTrace();</span>
+<span class="nc" id="L163">        }</span>
+<span class="nc" id="L164">        long endTime = System.currentTimeMillis();</span>
+<span class="nc" id="L165">        long timer = endTime - startTime;</span>
+        //System.out.println(&quot;Time to read: &quot; + timer + &quot; ms&quot;);
+<span class="nc" id="L167">        return map;</span>
+    }
+    
+    /**
+     * Method used to read the map size from the .map files first 4 info rows
+     * 
+     * @param line Text row from the .map file
+     * @return Integer
+     */
+    private static int digitFromLine(String line)
+    {
+        try
+        {
+<span class="nc" id="L180">            Pattern p = Pattern.compile(&quot;\\d+&quot;); </span>
+<span class="nc" id="L181">            Matcher m = p.matcher(line);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            if(m.find()){</span>
+<span class="nc" id="L183">                return (Integer.parseInt(m.group()));</span>
+            }
+<span class="nc" id="L185">        } catch (Exception e){</span>
+<span class="nc" id="L186">            e.printStackTrace();</span>
+<span class="nc" id="L187">        }</span>
+<span class="nc" id="L188">        return 0;</span>
+    }   
+    
+    private static void sleep(int ms){
+        try 
+        {
+<span class="nc" id="L194">            Thread.sleep(ms);</span>
+<span class="nc" id="L195">        } catch(InterruptedException ex) {</span>
+<span class="nc" id="L196">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L197">        }</span>
+<span class="nc" id="L198">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

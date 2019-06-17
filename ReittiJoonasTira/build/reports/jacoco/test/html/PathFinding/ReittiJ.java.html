@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReittiJ.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ReittiJoonasTira</a> &gt; <a href="index.source.html" class="el_package">PathFinding</a> &gt; <span class="el_source">ReittiJ.java</span></div><h1>ReittiJ.java</h1><pre class="source lang-java linenums">package PathFinding;
+
+import OwnObjects.Vertex;
+import Algoritm.Dijkstra;
+import Algoritm.Astar;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+/**
+ * Main class of the project. Creates javafx application
+ *
+ * @author Jaykob
+ */
+<span class="nc" id="L33">public class ReittiJ extends Application </span>
+{
+    int startX, startY, endX, endY;
+    String mapFile;
+    
+    @Override
+    public void start(Stage primaryStage) 
+    {
+        //Decimal formating to 2 decimal
+<span class="nc" id="L42">        DecimalFormat df = new DecimalFormat(&quot;#.##&quot;);</span>
+        
+        //Text fields to get the start and end coordinates
+<span class="nc" id="L45">        Label infoLabel = new Label(&quot;Please write START __X__ and __Y__ coordinates and DESTINATION __X__ and __Y__ coordinates on the text field below&quot;);</span>
+<span class="nc" id="L46">        TextField startXfield = new TextField();</span>
+<span class="nc" id="L47">        startXfield.setPrefWidth(70);</span>
+<span class="nc" id="L48">        TextField startYfield = new TextField();</span>
+<span class="nc" id="L49">        startYfield.setPrefWidth(70);</span>
+<span class="nc" id="L50">        TextField endXfield = new TextField();</span>
+<span class="nc" id="L51">        endXfield.setPrefWidth(70);</span>
+<span class="nc" id="L52">        TextField endYfield = new TextField();</span>
+<span class="nc" id="L53">        endYfield.setPrefWidth(70);</span>
+<span class="nc" id="L54">        Label errorLabel = new Label(&quot;&quot;);</span>
+        
+        //buttons to display the visual grid view
+        //Astar button
+<span class="nc" id="L58">        Button aButton = new Button(&quot;astar&quot;);</span>
+<span class="nc" id="L59">        aButton.setPrefSize(200, 30);</span>
+<span class="nc" id="L60">        aButton.setOnAction(new EventHandler&lt;ActionEvent&gt;() </span>
+<span class="nc" id="L61">        {</span>
+            @Override
+            public void handle(ActionEvent e) 
+            {
+                try
+                {
+<span class="nc" id="L67">                    errorLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L68">                    startX = Integer.parseInt(startXfield.getText());</span>
+<span class="nc" id="L69">                    startY = Integer.parseInt(startYfield.getText());</span>
+<span class="nc" id="L70">                    endX = Integer.parseInt(endXfield.getText());</span>
+<span class="nc" id="L71">                    endY = Integer.parseInt(endYfield.getText());</span>
+                    //Astar view with scroller
+<span class="nc" id="L73">                    Vertex[][] aMap = readMap();</span>
+<span class="nc" id="L74">                    Vertex aStart = aMap[startX][startY];</span>
+<span class="nc" id="L75">                    Vertex aEnd = aMap[endX][endY];</span>
+<span class="nc" id="L76">                    Astar astar = new Astar();</span>
+<span class="nc" id="L77">                    View astarView = new View(aMap, aStart, aEnd, astar);</span>
+                    
+<span class="nc" id="L79">                    ScrollPane scroll1 = new ScrollPane();</span>
+<span class="nc" id="L80">                    scroll1.setContent(astarView);</span>
+
+<span class="nc" id="L82">                    BorderPane pane = new BorderPane();</span>
+<span class="nc" id="L83">                    pane.setCenter(scroll1);</span>
+<span class="nc" id="L84">                    Label aTime = new Label(&quot;Total time consume of algorith 'Astar': &quot; + astar.getTimer() + &quot;ms&quot;);</span>
+<span class="nc" id="L85">                    Label aDistance = new Label(&quot;Total distance of path 'Astar': END POINT NOT FOUND&quot;);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                    if(astar.endFound())</span>
+                    {
+<span class="nc" id="L88">                        aDistance = new Label(&quot;Total distance of path 'Astar': &quot; + df.format(astar.getVertex(aEnd.getX(), aEnd.getY()).getDistance()));</span>
+                    }
+<span class="nc" id="L90">                    HBox info = new HBox(aTime, aDistance);</span>
+<span class="nc" id="L91">                    info.setSpacing(40);</span>
+<span class="nc" id="L92">                    pane.setTop(info);</span>
+<span class="nc" id="L93">                    Stage stage = new Stage();</span>
+<span class="nc" id="L94">                    stage.setTitle(&quot;astar window&quot;);</span>
+<span class="nc" id="L95">                    stage.setScene(new Scene(pane, 900, 800));</span>
+<span class="nc" id="L96">                    stage.show();</span>
+<span class="nc" id="L97">                } catch (Exception ex){</span>
+<span class="nc" id="L98">                    errorLabel.setText(&quot;Start or end point is a wall or out of bounds&quot;);</span>
+<span class="nc" id="L99">                    errorLabel.setTextFill(Color.RED);</span>
+<span class="nc" id="L100">                }</span>
+<span class="nc" id="L101">            }</span>
+        });
+        //Dijkstra button
+<span class="nc" id="L104">        Button dButton = new Button(&quot;dijkstra&quot;);</span>
+<span class="nc" id="L105">        dButton.setPrefSize(200, 30);</span>
+<span class="nc" id="L106">        dButton.setOnAction(new EventHandler&lt;ActionEvent&gt;() </span>
+<span class="nc" id="L107">        {</span>
+            @Override
+            public void handle(ActionEvent e) 
+            {
+                try
+                {
+<span class="nc" id="L113">                    errorLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L114">                    startX = Integer.parseInt(startXfield.getText());</span>
+<span class="nc" id="L115">                    startY = Integer.parseInt(startYfield.getText());</span>
+<span class="nc" id="L116">                    endX = Integer.parseInt(endXfield.getText());</span>
+<span class="nc" id="L117">                    endY = Integer.parseInt(endYfield.getText());</span>
+                    //Dijkstra view with scroller
+<span class="nc" id="L119">                    Vertex[][] dMap = readMap();</span>
+<span class="nc" id="L120">                    Vertex dStart = dMap[startX][startY];</span>
+<span class="nc" id="L121">                    Vertex dEnd = dMap[endX][endY];</span>
+<span class="nc" id="L122">                    Dijkstra dijkstra = new Dijkstra();</span>
+<span class="nc" id="L123">                    View dijkstraView = new View(dMap, dStart, dEnd, dijkstra);</span>
+<span class="nc" id="L124">                    ScrollPane scroll2 = new ScrollPane();</span>
+<span class="nc" id="L125">                    scroll2.setContent(dijkstraView);</span>
+
+<span class="nc" id="L127">                    BorderPane pane = new BorderPane();</span>
+<span class="nc" id="L128">                    pane.setCenter(scroll2);</span>
+<span class="nc" id="L129">                    Label dTime = new Label(&quot;Total time consume of algorith 'Dijkstra': &quot; + dijkstra.getTimer() + &quot;ms&quot;);</span>
+<span class="nc" id="L130">                    Label dDistance = new Label(&quot;Total distance of path 'Dijkstra': END POINT NOT FOUND&quot;);</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                    if(dijkstra.endFound())</span>
+                    {
+<span class="nc" id="L133">                        dDistance = new Label(&quot;Total distance of path 'Dijkstra': &quot; + df.format(dijkstra.getVertex(dEnd.getX(), dEnd.getY()).getDistance()));</span>
+                    }
+<span class="nc" id="L135">                    HBox info = new HBox(dTime, dDistance);</span>
+<span class="nc" id="L136">                    info.setSpacing(40);</span>
+<span class="nc" id="L137">                    pane.setTop(info);</span>
+<span class="nc" id="L138">                    Stage stage = new Stage();</span>
+<span class="nc" id="L139">                    stage.setTitle(&quot;dijkstra window&quot;);</span>
+<span class="nc" id="L140">                    stage.setScene(new Scene(pane, 900, 800));</span>
+<span class="nc" id="L141">                    stage.show();</span>
+<span class="nc" id="L142">                } catch (Exception ex){</span>
+<span class="nc" id="L143">                    errorLabel.setText(&quot;Start or end point is a wall or out of bounds&quot;);</span>
+<span class="nc" id="L144">                    errorLabel.setTextFill(Color.RED);</span>
+<span class="nc" id="L145">                }</span>
+<span class="nc" id="L146">            }</span>
+        });
+        
+        //Choise box for choosing the map
+<span class="nc" id="L150">        ChoiceBox&lt;String&gt; mapString = new ChoiceBox();</span>
+<span class="nc" id="L151">        mapString.setValue(mapFile);</span>
+        try
+        {
+<span class="nc" id="L154">            File folder = new File(System.getProperty(&quot;user.dir&quot;));</span>
+<span class="nc" id="L155">            File[] listOfFiles = folder.listFiles();</span>
+            
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            for (int i = 0; i &lt; listOfFiles.length; i++) </span>
+            {
+<span class="nc bnc" id="L159" title="All 2 branches missed.">              if (listOfFiles[i].isFile()) </span>
+              {
+<span class="nc" id="L161">                String mapName = listOfFiles[i].getName();</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                if(mapName.contains(&quot;.map&quot;))</span>
+                {
+<span class="nc" id="L164">                    mapString.getItems().add(mapName);</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                    if(i == listOfFiles.length - 1)</span>
+                    {
+<span class="nc" id="L167">                        mapFile = mapString.getValue();</span>
+                    }
+                }
+              }
+            }
+<span class="nc bnc" id="L172" title="All 6 branches missed.">            if(mapString.getValue() == null || mapString.getValue().equals(&quot;&quot;) || listOfFiles.length &lt; 1)</span>
+            {
+<span class="nc" id="L174">                errorLabel.setText(&quot;Please choose a map&quot;);</span>
+<span class="nc" id="L175">                errorLabel.setTextFill(Color.RED);</span>
+            }
+<span class="nc" id="L177">            mapString.setOnAction(new EventHandler&lt;ActionEvent&gt;() </span>
+<span class="nc" id="L178">            {</span>
+                @Override
+                public void handle(ActionEvent e) 
+                {
+<span class="nc" id="L182">                    mapFile = mapString.getValue();</span>
+<span class="nc" id="L183">                    errorLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L184">                }</span>
+            });
+<span class="nc" id="L186">        } catch (Exception ex){</span>
+<span class="nc" id="L187">            ex.printStackTrace();</span>
+<span class="nc" id="L188">        }</span>
+        
+        
+        //Main window
+<span class="nc" id="L192">        ScrollPane scrollMain = new ScrollPane();</span>
+<span class="nc" id="L193">        HBox textBox = new HBox(startXfield, startYfield, endXfield, endYfield);</span>
+<span class="nc" id="L194">        textBox.setSpacing(50);</span>
+<span class="nc" id="L195">        HBox btnBox = new HBox(mapString, aButton, dButton);</span>
+<span class="nc" id="L196">        btnBox.setSpacing(50);</span>
+<span class="nc" id="L197">        VBox mainPane = new VBox(infoLabel, errorLabel, textBox, btnBox);</span>
+<span class="nc" id="L198">        mainPane.setMinSize(600, 100);</span>
+<span class="nc" id="L199">        mainPane.setSpacing(20);</span>
+<span class="nc" id="L200">        scrollMain.setContent(mainPane);</span>
+        
+        //stage info
+<span class="nc" id="L203">        Scene scene = new Scene(scrollMain, 800, 300);</span>
+<span class="nc" id="L204">        primaryStage.setTitle(&quot;Shortest Path&quot;);     </span>
+<span class="nc" id="L205">        primaryStage.setScene(scene);</span>
+<span class="nc" id="L206">        primaryStage.show();</span>
+<span class="nc" id="L207">    }</span>
+
+    public static void main(String[] args) 
+    {
+<span class="nc" id="L211">        launch(args);</span>
+<span class="nc" id="L212">    }</span>
+    
+    /**
+     * Reads a .map file that has the text representation of the map.
+     * Generates a 2D Vertex array from this file. This 2D array is used by
+     * the algorithms
+     * 
+     * @return Vertex[][] Representation of the map in 2d Vertex array
+     */
+    private Vertex[][] readMap()
+    {
+        BufferedReader reader;    
+        String mapType;
+<span class="nc" id="L225">        int mapHeight = 0;</span>
+<span class="nc" id="L226">        int mapWidth = 0;</span>
+<span class="nc" id="L227">        Vertex[][] map = new Vertex[mapHeight][mapWidth];</span>
+        
+        //read map info
+        try
+        {   
+            //initialize file reader
+<span class="nc" id="L233">            reader = new BufferedReader(new FileReader(mapFile));</span>
+            
+            //read map information. 4 first lines
+<span class="nc bnc" id="L236" title="All 2 branches missed.">            for(int i = 0; i &lt; 4; i++)</span>
+            {
+<span class="nc" id="L238">                String line = reader.readLine();</span>
+<span class="nc bnc" id="L239" title="All 4 branches missed.">                switch(i){</span>
+                    case 0:
+<span class="nc" id="L241">                        mapType = line;</span>
+<span class="nc" id="L242">                        break;</span>
+                    case 1:
+<span class="nc" id="L244">                        mapHeight = digitFromLine(line);</span>
+<span class="nc" id="L245">                        break;</span>
+                    case 2:
+<span class="nc" id="L247">                        mapWidth = digitFromLine(line);</span>
+<span class="nc" id="L248">                        break;</span>
+                    default:
+                        break;
+                }
+            }
+            
+            //make map
+<span class="nc" id="L255">            map = new Vertex[mapHeight][mapWidth];</span>
+            char c;
+            
+<span class="nc bnc" id="L258" title="All 2 branches missed.">            for(int x = 0; x &lt; mapHeight; x++)</span>
+            {
+<span class="nc bnc" id="L260" title="All 2 branches missed.">                for(int y = 0; y &lt; mapWidth; y++)</span>
+                {
+<span class="nc" id="L262">                    int readInt = reader.read();</span>
+                    
+                    //continue reading when reaching end of the line
+<span class="nc bnc" id="L265" title="All 4 branches missed.">                    while(readInt == 10 || readInt == 13)</span>
+                    {
+<span class="nc" id="L267">                        readInt =reader.read();</span>
+                    }
+                    
+<span class="nc" id="L270">                    c = (char) readInt;</span>
+<span class="nc bnc" id="L271" title="All 4 branches missed.">                    if(c == '.' || c == 'G')</span>
+                    {
+<span class="nc" id="L273">                        Vertex v = new Vertex(x, y, c);</span>
+<span class="nc" id="L274">                        map[x][y] = v;</span>
+<span class="nc" id="L275">                    } else </span>
+                    {
+<span class="nc" id="L277">                        map[x][y] = null;</span>
+                    } 
+                }
+            }
+            
+<span class="nc" id="L282">            reader.close();</span>
+
+<span class="nc" id="L284">        } catch(IOException e) {</span>
+<span class="nc" id="L285">            e.printStackTrace();</span>
+<span class="nc" id="L286">        }</span>
+<span class="nc" id="L287">        return map;</span>
+    }
+    
+    /**
+     * Method used to read the map size from the .map files first 4 info rows
+     * 
+     * @param line Text row from the .map file
+     * @return Integer value
+     */
+    private int digitFromLine(String line)
+    {
+        try
+        {
+<span class="nc" id="L300">            Pattern p = Pattern.compile(&quot;\\d+&quot;); </span>
+<span class="nc" id="L301">            Matcher m = p.matcher(line);</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">            if(m.find()){</span>
+<span class="nc" id="L303">                return (Integer.parseInt(m.group()));</span>
+            }
+<span class="nc" id="L305">        } catch (Exception e){</span>
+<span class="nc" id="L306">            e.printStackTrace();</span>
+<span class="nc" id="L307">        }</span>
+<span class="nc" id="L308">        return 0;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

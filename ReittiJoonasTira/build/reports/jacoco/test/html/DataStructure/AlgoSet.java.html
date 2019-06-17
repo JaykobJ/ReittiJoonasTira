@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AlgoSet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ReittiJoonasTira</a> &gt; <a href="index.source.html" class="el_package">DataStructure</a> &gt; <span class="el_source">AlgoSet.java</span></div><h1>AlgoSet.java</h1><pre class="source lang-java linenums">package DataStructure;
+
+import OwnObjects.Vertex;
+import java.io.Serializable;
+
+/**
+ * Hash Set implementation for the project
+ *
+ * @author Jaykob
+ */
+public class AlgoSet implements Serializable
+{
+    private int objectCount;
+    private Vertex[] array;
+<span class="fc" id="L15">    private double alfa = 0.75;</span>
+    
+    /**
+     * Constructor for the hash set
+     * 
+     * @param graphHeight graphs height
+     * @param graphWidth  graphs width
+     */
+    public AlgoSet(int graphHeight, int graphWidth)
+<span class="fc" id="L24">    {</span>
+<span class="fc" id="L25">        int arraySize = (graphHeight * graphWidth)/4;</span>
+<span class="fc" id="L26">        this.array = new Vertex[arraySize];</span>
+<span class="fc" id="L27">        this.objectCount = 0;</span>
+<span class="fc" id="L28">    }</span>
+    
+    /**
+     * Adds a Vertex to the hash set by it's hash value.
+     * Returns a boolean value for result if the Vertex was added or not.
+     * Time consume O(1)
+     * 
+     * @param v Vertex to be added
+     * @return boolean value
+     */
+    public boolean add(Vertex v) 
+    {
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if(grow())</span>
+        {
+<span class="fc" id="L42">            growSize();</span>
+        }
+<span class="fc" id="L44">        int i = 0;</span>
+
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        while(i &lt;= this.array.length)</span>
+        {
+<span class="fc" id="L48">            int index = Math.abs((v.hashCode() + i) % this.array.length);          </span>
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            if(this.array[index] == null)</span>
+            {
+<span class="fc" id="L52">                this.array[index] = v;</span>
+<span class="fc" id="L53">                objectCount++;</span>
+<span class="fc" id="L54">                return true;</span>
+            }
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            else if(this.array[index].equals(v))</span>
+            {
+<span class="fc" id="L58">                return false;</span>
+            }
+            else
+            {
+<span class="fc" id="L62">                i++;</span>
+            }
+<span class="fc" id="L64">        }</span>
+<span class="nc" id="L65">      return false;</span>
+    }
+    
+    /**
+     * Check if the Set contains the Vertex.
+     * Returns a boolean value for result if the Vertex was found or not.
+     * Time consume O(1)
+     * 
+     * @param v Vertex that is searched
+     * @return boolean value
+     */
+    public boolean contains(Vertex v)
+    {
+<span class="fc" id="L78">        int i = 0;</span>
+        
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        while(i &lt;= this.array.length)</span>
+        {
+<span class="fc" id="L82">            int index = Math.abs((v.hashCode() + i) % this.array.length);</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if(this.array[index] == null){</span>
+<span class="fc" id="L84">                return false;</span>
+            }
+<span class="fc bfc" id="L86" title="All 2 branches covered.">            else if(this.array[index].equals(v))</span>
+            {
+<span class="fc" id="L88">                return true;</span>
+            }
+            else
+            {
+<span class="fc" id="L92">                i++;</span>
+            }
+<span class="fc" id="L94">        }</span>
+<span class="nc" id="L95">        return false;</span>
+    }
+    
+    /**
+     * Method that grows the size of the array used by the set if it's Object
+     * count is about to exceed the alfa value. Re hashes the previous
+     * Objects to the new array.
+     * Time consume O(n), where n = size of the previous array.
+     * 
+     */
+    private void growSize()
+    {
+<span class="fc" id="L107">        Vertex[] temp = this.array.clone();</span>
+<span class="fc" id="L108">        int newSize = this.array.length * 2;</span>
+<span class="fc" id="L109">        this.array = new Vertex[newSize];</span>
+<span class="fc" id="L110">        this.objectCount = 0;</span>
+        
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        for(Vertex v : temp)</span>
+        {
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            if(v != null)</span>
+            {
+<span class="fc" id="L116">                add(v);</span>
+            }
+        }
+<span class="fc" id="L119">    }</span>
+    
+    /**
+     * Method that checks if the size of the array that the set uses has 
+     * to be grown.
+     * 
+     * @return boolean value
+     */
+    private boolean grow(){
+<span class="fc" id="L128">        int newObjCount = this.objectCount + 1;</span>
+<span class="fc" id="L129">        double c = (double)newObjCount/(double)this.array.length;</span>
+<span class="pc bpc" id="L130" title="1 of 4 branches missed.">        if(c &lt; this.alfa &amp;&amp; c &gt;= 0)</span>
+        {
+<span class="fc" id="L132">            return false;</span>
+        }
+<span class="fc" id="L134">        return true;</span>
+    }
+    
+    /**
+     * Returns the amount of Objects the Set holds
+     * 
+     * @return Object count as integer value
+     */
+    public int getSize()
+    {
+<span class="fc" id="L144">        return this.objectCount;</span>
+    }
+    
+    /**
+     * Returns the size of the array that the Set uses
+     * 
+     * @return Array size as integer value
+     */
+    public int lenght()
+    {
+<span class="fc" id="L154">        return this.array.length;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

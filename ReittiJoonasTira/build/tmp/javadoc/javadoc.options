@@ -1,0 +1,13 @@
+-classpath 'C:\\ReittiJoonasTira\\ReittiJoonasTira\\build\\classes\\java\\main;C:\\ReittiJoonasTira\\ReittiJoonasTira\\build\\resources\\main'
+-d 'C:\\ReittiJoonasTira\\ReittiJoonasTira\\build\\docs\\javadoc'
+-doctitle 'ReittiJoonasTira API'
+-quiet 
+-windowtitle 'ReittiJoonasTira API'
+'C:\\ReittiJoonasTira\\ReittiJoonasTira\\src\\main\\java\\Algoritm\\Astar.java'
+'C:\\ReittiJoonasTira\\ReittiJoonasTira\\src\\main\\java\\Algoritm\\Dijkstra.java'
+'C:\\ReittiJoonasTira\\ReittiJoonasTira\\src\\main\\java\\DataStructure\\AlgoMinPrioQueue.java'
+'C:\\ReittiJoonasTira\\ReittiJoonasTira\\src\\main\\java\\DataStructure\\AlgoSet.java'
+'C:\\ReittiJoonasTira\\ReittiJoonasTira\\src\\main\\java\\OwnObjects\\Vertex.java'
+'C:\\ReittiJoonasTira\\ReittiJoonasTira\\src\\main\\java\\PathFinding\\ReittiJ.java'
+'C:\\ReittiJoonasTira\\ReittiJoonasTira\\src\\main\\java\\PathFinding\\View.java'
+'C:\\ReittiJoonasTira\\ReittiJoonasTira\\src\\main\\java\\Testing\\AlgorithmTesting.java'

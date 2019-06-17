@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>View.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ReittiJoonasTira</a> &gt; <a href="index.source.html" class="el_package">PathFinding</a> &gt; <span class="el_source">View.java</span></div><h1>View.java</h1><pre class="source lang-java linenums">package PathFinding;
+
+import OwnObjects.Vertex;
+import Algoritm.Dijkstra;
+import Algoritm.Astar;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+
+/**
+ *This class is used to generate visual representation of the search 
+ * algorithm route as GridPane.
+ * 
+ * @author Jaykob
+ */
+public class View extends GridPane
+{
+    
+    /**
+     * Class constructor. Starts the search algorithm of the Dijkstra class
+     * object and generates GridPane from the updated graph.
+     * 
+     * @param graph 2D Vertex array representation of the graph
+     * @param start Start Vertex
+     * @param end Destination Vertex
+     * @param dij Dijkstra class object
+     */
+    public View(Vertex[][] graph, Vertex start, Vertex end, Dijkstra dij)
+<span class="nc" id="L32">    {</span>
+        
+<span class="nc" id="L34">        setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));</span>
+<span class="nc" id="L35">        setHgap(1);</span>
+<span class="nc" id="L36">        setVgap(1);</span>
+        
+<span class="nc" id="L38">        dij.doDijkstra(graph, start, end);</span>
+<span class="nc" id="L39">        paintGraph(graph, start, end);</span>
+<span class="nc" id="L40">    }</span>
+    
+    /**
+     * Class constructor. Starts the search algorithm of the Astar class
+     * object and generates GridPane from the updated graph. 
+     * 
+     * @param graph 2D Vertex array representation of the graph
+     * @param start Start Vertex
+     * @param end Destination Vertex
+     * @param astar Astar class object
+     */
+    public View(Vertex[][] graph, Vertex start, Vertex end, Astar astar)
+<span class="nc" id="L52">    {</span>
+        
+<span class="nc" id="L54">        setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));</span>
+<span class="nc" id="L55">        setHgap(1);</span>
+<span class="nc" id="L56">        setVgap(1);</span>
+        
+<span class="nc" id="L58">        astar.doAStar(graph, start, end);</span>
+<span class="nc" id="L59">        paintGraph(graph, start, end);</span>
+<span class="nc" id="L60">    }</span>
+    
+    /**
+     * Make and paint nodes inside the GridPane to make visual representation
+     * of the graph parameter.
+     * 
+     * @param graph 2D Vertex array. Updated by search algorithm class 
+     * @param start Start Vertex
+     * @param end Destination Vertex
+     */
+    private void paintGraph(Vertex[][] graph, Vertex start, Vertex end){
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        for(int x = 0; x &lt; graph.length; x++)</span>
+        {
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            for(int y = 0; y &lt; graph[x].length; y++)</span>
+            {
+<span class="nc" id="L75">                Pane canvas = new Pane();</span>
+<span class="nc" id="L76">                canvas.setPrefSize(20,20);</span>
+<span class="nc" id="L77">                canvas.setMinSize(20,20);</span>
+<span class="nc" id="L78">                canvas.setMaxSize(20,20);</span>
+                int marker;
+<span class="nc bnc" id="L80" title="All 2 branches missed.">                if(graph[x][y] != null)</span>
+                {
+<span class="nc" id="L82">                    marker = graph[x][y].getMarker();</span>
+                }else
+                {
+<span class="nc" id="L85">                    marker = 0;</span>
+                }
+<span class="nc bnc" id="L87" title="All 4 branches missed.">                switch (marker) </span>
+                {
+                    case 0 : 
+<span class="nc" id="L90">                        canvas.setStyle(&quot;-fx-background-color: black;&quot;);</span>
+<span class="nc" id="L91">                        add(canvas, y, x);</span>
+<span class="nc" id="L92">                        break;</span>
+                    case 1 : 
+<span class="nc" id="L94">                        canvas.setStyle(&quot;-fx-background-color: white;&quot;);</span>
+<span class="nc" id="L95">                        add(canvas, y, x);</span>
+<span class="nc" id="L96">                        break;</span>
+                    case 2 : 
+<span class="nc" id="L98">                        canvas.setStyle(&quot;-fx-background-color: blue;&quot;);</span>
+<span class="nc" id="L99">                        add(canvas, y, x);</span>
+<span class="nc" id="L100">                        break;</span>
+                    default : 
+<span class="nc" id="L102">                        canvas.setStyle(&quot;-fx-background-color: red;&quot;);</span>
+<span class="nc" id="L103">                        add(canvas, y, x);</span>
+                        break;
+                }
+            }
+        }
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if(end.hasParent())</span>
+        {
+<span class="nc" id="L110">            Pane canvas = new Pane();</span>
+<span class="nc" id="L111">            canvas.setPrefSize(20,20);</span>
+<span class="nc" id="L112">            canvas.setMinSize(20,20);</span>
+<span class="nc" id="L113">            canvas.setMaxSize(20,20);</span>
+<span class="nc" id="L114">            canvas.setStyle(&quot;-fx-background-color: red;&quot;);</span>
+<span class="nc" id="L115">            add(canvas, end.getY(), end.getX());</span>
+<span class="nc" id="L116">            showPath(end.getParent());</span>
+        }
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if(start.equals(end))</span>
+        {
+<span class="nc" id="L120">            Pane canvas = new Pane();</span>
+<span class="nc" id="L121">            canvas.setPrefSize(20,20);</span>
+<span class="nc" id="L122">            canvas.setMinSize(20,20);</span>
+<span class="nc" id="L123">            canvas.setMaxSize(20,20);</span>
+<span class="nc" id="L124">            canvas.setStyle(&quot;-fx-background-color: red;&quot;);</span>
+<span class="nc" id="L125">            add(canvas, end.getY(), end.getX());</span>
+        }
+<span class="nc" id="L127">    }</span>
+    
+    /**
+     * Paints the path nodes from end node to green. When the final node is 
+     * reached (start node) paint it pink
+     * 
+     * @param v shortest path Vertex
+     */
+    private void showPath(Vertex v)
+    {
+<span class="nc" id="L137">        Pane canvas = new Pane();</span>
+<span class="nc" id="L138">        canvas.setPrefSize(20,20);</span>
+<span class="nc" id="L139">        canvas.setMinSize(20,20);</span>
+<span class="nc" id="L140">        canvas.setMaxSize(20,20);</span>
+<span class="nc" id="L141">        canvas.setStyle(&quot;-fx-background-color: green;&quot;);</span>
+<span class="nc" id="L142">        add(canvas, v.getY(), v.getX());</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if(v.hasParent())</span>
+        {
+<span class="nc" id="L145">            showPath(v.getParent());</span>
+        }
+        else
+        {
+<span class="nc" id="L149">            canvas.setStyle(&quot;-fx-background-color: lime;&quot;);</span>
+        }
+<span class="nc" id="L151">    }</span>
+    
+    /**
+     * Make and paint nodes inside the GridPane to make visual representation
+     * of the empty(without path) graph.
+     * 
+     * @param graph 2D Vertex array representation of the graph
+     */
+    public View (Vertex[][] graph)
+<span class="nc" id="L160">    {</span>
+<span class="nc" id="L161">        setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));</span>
+<span class="nc" id="L162">        setHgap(1);</span>
+<span class="nc" id="L163">        setVgap(1);</span>
+        
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        for(int x = 0; x &lt; graph.length; x++)</span>
+        {
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            for(int y = 0; y &lt; graph[x].length; y++)</span>
+            {
+<span class="nc" id="L169">                Pane canvas = new Pane();</span>
+<span class="nc" id="L170">                canvas.setPrefSize(20,20);</span>
+<span class="nc" id="L171">                canvas.setMinSize(20,20);</span>
+<span class="nc" id="L172">                canvas.setMaxSize(20,20);</span>
+                int marker;
+<span class="nc bnc" id="L174" title="All 2 branches missed.">                if(graph[x][y] != null)</span>
+                {
+<span class="nc" id="L176">                    marker = graph[x][y].getMarker();</span>
+                }else
+                {
+<span class="nc" id="L179">                    marker = 0;</span>
+                }
+<span class="nc bnc" id="L181" title="All 3 branches missed.">                switch (marker) </span>
+                {
+                    case 0 : 
+<span class="nc" id="L184">                        canvas.setStyle(&quot;-fx-background-color: black;&quot;);</span>
+<span class="nc" id="L185">                        add(canvas, y, x);</span>
+<span class="nc" id="L186">                        break;</span>
+                    case 1 : 
+<span class="nc" id="L188">                        canvas.setStyle(&quot;-fx-background-color: white;&quot;);</span>
+<span class="nc" id="L189">                        add(canvas, y, x);</span>
+<span class="nc" id="L190">                        break;</span>
+                    default : 
+<span class="nc" id="L192">                        canvas.setStyle(&quot;-fx-background-color: red;&quot;);</span>
+<span class="nc" id="L193">                        add(canvas, y, x);</span>
+                        break;
+                }
+            }
+        }
+<span class="nc" id="L198">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

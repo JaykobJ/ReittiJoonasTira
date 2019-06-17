@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Vertex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ReittiJoonasTira</a> &gt; <a href="index.source.html" class="el_package">OwnObjects</a> &gt; <span class="el_source">Vertex.java</span></div><h1>Vertex.java</h1><pre class="source lang-java linenums">package OwnObjects;
+
+/**
+ * Vertex class to hold the information for nodes in the graph that are
+ * walkable areas.
+ * 
+ * @author Jaykob
+ */
+public class Vertex{
+    //class properties
+    int xCoordinate;
+    int yCoordinate;
+    int marker;
+    double distance; //distance form the start vertex
+    double heuristic; //distance from the end vertex
+    double fCost; //function cost of distance + heuristic
+    Vertex parent;
+    
+    /**
+     * Constructor for the class
+     * 
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @param mark character from the map
+     */
+    public Vertex(int x, int y, char mark)
+<span class="fc" id="L27">    {</span>
+<span class="fc" id="L28">        this.xCoordinate = x;</span>
+<span class="fc" id="L29">        this.yCoordinate = y;</span>
+<span class="fc" id="L30">        parseMarkerCode(mark);</span>
+<span class="fc" id="L31">        this.parent = null;</span>
+<span class="fc" id="L32">    }</span>
+    
+    /**
+     * Constructor for empty class
+     * 
+     */
+    public Vertex()
+<span class="fc" id="L39">    {</span>
+        
+<span class="fc" id="L41">    }</span>
+    
+    /**
+     * Sets the Vertex x-coordinate
+     * 
+     * @param x x position
+     */
+    public void setX(int x)
+    {
+<span class="fc" id="L50">        this.xCoordinate = x;</span>
+<span class="fc" id="L51">    }</span>
+    
+    /**
+     * Sets the Vertex y-coordinate
+     * 
+     * @param y y position
+     */
+    public void setY(int y)
+    {
+<span class="fc" id="L60">        this.yCoordinate = y;</span>
+<span class="fc" id="L61">    }</span>
+    
+    /**
+     * Sets the character marker of the Vertex
+     * 
+     * @param marker character 
+     */
+    public void setMarker(int marker)
+    {
+<span class="fc" id="L70">        this.marker = marker;</span>
+<span class="fc" id="L71">    }</span>
+    
+    /**
+     * Sets the distance from start Vertex
+     * 
+     * @param d distance as double
+     */
+    public void setDistance(double d)
+    {
+<span class="fc" id="L80">        this.distance = d;</span>
+<span class="fc" id="L81">    }</span>
+    
+    /**
+     * Sets the heuristic value distance from the end Vertex
+     * 
+     * @param end destination Vertex
+     * @param diagonalWeight diagonal movement cost
+     * @param hvWeight horizontal and vertical movement cost
+     */
+    public void setHeuristic(Vertex end, double diagonalWeight, double hvWeight)
+    {
+<span class="fc" id="L92">        int dx = Math.abs(this.getX() - end.getX()); //distance from end x-coordinate</span>
+<span class="fc" id="L93">        int dy = Math.abs(this.getY() - end.getY()); //distance from end y-coordinate</span>
+        
+<span class="fc" id="L95">        this.heuristic = hvWeight * (dx + dy) + (diagonalWeight - 2 * hvWeight) * Math.min(dx, dy);</span>
+<span class="fc" id="L96">    }</span>
+    
+    /**
+     * Method to tie the heuristic value. This helps the A* algorithm to narrow
+     * down the shortest path searches. Makes it faster.
+     */
+    public void tie()
+    {
+<span class="fc" id="L104">        this.heuristic *= (this.heuristic * (1 + 1/500));</span>
+<span class="fc" id="L105">    }</span>
+    
+    /**
+     * Sets the F cost for the Vertex. F cost is used by A* search algorithm
+     * 
+     * @param d distance value
+     */
+    public void setFCost(double d)
+    {
+<span class="fc" id="L114">        this.fCost = d + this.heuristic;</span>
+<span class="fc" id="L115">    }</span>
+    
+    /**
+     * Sets the parent for the Vertex
+     * 
+     * @param p parent Vertex
+     */
+    public void setParent(Vertex p)
+    {
+<span class="fc" id="L124">        this.parent = p;</span>
+<span class="fc" id="L125">    }</span>
+    
+    /**
+     * Returns the x-coordinate value
+     * 
+     * @return int value
+     */
+    public int getX()
+    {
+<span class="fc" id="L134">        return this.xCoordinate;</span>
+    }
+    
+    /**
+     * Returns the y-coordinate value
+     * 
+     * @return int value
+     */
+    public int getY()
+    {
+<span class="fc" id="L144">        return this.yCoordinate;</span>
+    }
+    
+    /**
+     * Returns the marker value as integer
+     * 
+     * @return int value
+     */
+    public int getMarker()
+    {
+<span class="fc" id="L154">        return this.marker;</span>
+    }
+    
+    /**
+     * Returns the distance from start Vertex
+     * 
+     * @return double value
+     */
+    public double getDistance()
+    {
+<span class="fc" id="L164">        return this.distance;</span>
+    }
+    
+    /**
+     * Returns the heuristic distance from the end Vertex
+     * 
+     * @return double value
+     */
+    public double getHeurictic()
+    {
+<span class="fc" id="L174">        return this.heuristic;</span>
+    }
+    
+    /**
+     * Returns the F cost of the Vertex
+     * 
+     * @return double value 
+     */
+    public double getFCost()
+    {
+<span class="fc" id="L184">        return this.fCost;</span>
+    }
+    
+    /**
+     * Returns this Vertex parent Vertex
+     * 
+     * @return parent Vertex 
+     */
+    public Vertex getParent()
+    {
+<span class="fc" id="L194">        return this.parent;</span>
+    }
+    
+    /**
+     * Returns boolean value if the Vertex has parent or not
+     * 
+     * @return boolean value
+     */
+    public boolean hasParent(){
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">        if(this.parent != null){</span>
+<span class="fc" id="L204">            return true;</span>
+        }
+<span class="nc" id="L206">        return false;</span>
+    }
+    
+    /**
+     * Method to parse the character mark from the .map file to integer.
+     * 1 is for passable terrain and 0 for non passable.
+     * 
+     * @param mark character value
+     */
+    private void parseMarkerCode(char mark)
+    {
+<span class="fc bfc" id="L217" title="All 5 branches covered.">        switch(mark)</span>
+        {
+            case '.':
+<span class="fc" id="L220">                this.marker = 1;</span>
+<span class="fc" id="L221">                break;</span>
+            case 'G':
+<span class="fc" id="L223">                this.marker = 1;</span>
+<span class="fc" id="L224">                break;</span>
+            case '@':
+<span class="fc" id="L226">                this.marker = 0;</span>
+<span class="fc" id="L227">                break;</span>
+            case 'O':
+<span class="fc" id="L229">                this.marker = 0;</span>
+<span class="fc" id="L230">                break;</span>
+            default:
+<span class="fc" id="L232">                this.marker = 0;</span>
+                break;
+        }
+<span class="fc" id="L235">    }</span>
+    
+    /**
+     * Returns String representation of the Vertex coordinates
+     * 
+     * @return coordinates as String 
+     */
+    public String coordinates()
+    {
+<span class="fc" id="L244">        return &quot;(&quot; + this.xCoordinate + &quot;, &quot; + this.yCoordinate + &quot;)&quot;;</span>
+    }
+    
+    /**
+     * Override for the toString() method. Returns the Vertex coordinates and
+     * their distance value
+     * 
+     * @return String value of the Vertex 
+     */
+    @Override
+    public String toString()
+    {
+<span class="fc" id="L256">        String returnValue = &quot;(&quot; + this.xCoordinate + &quot;, &quot; + this.yCoordinate +</span>
+<span class="fc" id="L257">                &quot;, &quot; + toTwoDecimal(this.distance) + &quot;)&quot;;</span>
+        
+<span class="fc" id="L259">        return returnValue;</span>
+    }  
+    
+    /**
+     * Method to convert double values in to 2 decimal.
+     * 
+     * @param d value to be converted
+     * @return new value
+     */
+    private double toTwoDecimal(double d)
+    {
+<span class="fc" id="L270">        d = Math.round(d*100);</span>
+<span class="fc" id="L271">        return d/100;</span>
+    }
+    
+    /**
+     * Method to generate the hashCode value for the Vertex
+     * 
+     * @return hashCode value as integer 
+     */
+    @Override
+    public int hashCode()
+    {
+        int r;
+<span class="fc" id="L283">        String code = &quot;&quot; + this.xCoordinate + this.yCoordinate + &quot;&quot;;</span>
+<span class="fc" id="L284">        r = code.hashCode();</span>
+<span class="fc" id="L285">        return r;</span>
+    }
+    
+    /**
+     * Method to check if the 2 Vertex are equal or not.
+     * 2 Vertex are equal if the share the same coordinates.
+     * 
+     * @param v Vertex to be compared to
+     * @return boolean value
+     */
+    public boolean equals(Vertex v)
+    {
+<span class="fc bfc" id="L297" title="All 2 branches covered.">        if(this.coordinates().equals(v.coordinates())){</span>
+<span class="fc" id="L298">            return true;</span>
+        }
+<span class="fc" id="L300">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

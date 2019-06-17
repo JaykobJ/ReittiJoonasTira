@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AlgoMinPrioQueue.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ReittiJoonasTira</a> &gt; <a href="index.source.html" class="el_package">DataStructure</a> &gt; <span class="el_source">AlgoMinPrioQueue.java</span></div><h1>AlgoMinPrioQueue.java</h1><pre class="source lang-java linenums">package DataStructure;
+
+import OwnObjects.Vertex;
+import java.io.Serializable;
+import java.util.Comparator;
+import java.util.NoSuchElementException;
+
+/**
+ * Minimum-priority queue implementation for the project
+ * 
+ * @author Jaykob
+ */
+public class AlgoMinPrioQueue implements Serializable
+{
+    private int objectCount;
+    private Vertex[] priorityQue;
+    private Comparator&lt;Vertex&gt; vertexComparator;  // optional comparator
+    
+    /**
+     * Constructor for the minimum-priority queue
+     * 
+     * @param graphHeight graphs height
+     * @param graphWidth graphs width
+     * @param c Comparator
+     */
+    public AlgoMinPrioQueue(int graphHeight, int graphWidth, Comparator c)
+<span class="fc" id="L27">    {</span>
+<span class="fc" id="L28">        this.vertexComparator = c;</span>
+<span class="fc" id="L29">        int arraySize = (graphHeight * graphWidth)/2;</span>
+<span class="fc" id="L30">        this.priorityQue = new Vertex[arraySize];</span>
+<span class="fc" id="L31">        this.objectCount = 0;</span>
+<span class="fc" id="L32">    }</span>
+    
+    /**
+     * Adds a Vertex to the priority queue and set it to it's correct location
+     * by the comparator value
+     * 
+     * @param v Vertex to be added
+     */
+    public void add(Vertex v)
+    {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (objectCount == priorityQue.length - 1)</span>
+        {
+<span class="fc" id="L44">            growSize(2 * priorityQue.length);</span>
+        }
+<span class="fc" id="L46">        priorityQue[++objectCount] = v;</span>
+<span class="fc" id="L47">        moveUp(objectCount);</span>
+<span class="fc" id="L48">    }</span>
+    
+    /**
+     * Removes and returns the minimum-priority Vertex from the start
+     * of the array.
+     * 
+     * @return Vertex that was removed
+     */
+    public Vertex remove()
+    {
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (isEmpty())</span>
+        {
+<span class="nc" id="L60">            throw new NoSuchElementException(&quot;Priority queue underflow&quot;);</span>
+        }
+<span class="fc" id="L62">        Vertex min = priorityQue[1];</span>
+<span class="fc" id="L63">        exchange(1, objectCount--);</span>
+<span class="fc" id="L64">        moveDown(1);</span>
+<span class="fc" id="L65">        priorityQue[objectCount+1] = null;</span>
+<span class="fc" id="L66">        return min;</span>
+    }
+    
+    /**
+     * If possible changes the Vertex location in the queue by it's index
+     * in the array. This method is used to rearrange the priority queue.
+     * Time consume O(log n), where n = size of the array
+     * 
+     * @param k Index in the array
+     */
+    private void moveUp(int k) 
+    {
+<span class="fc bfc" id="L78" title="All 4 branches covered.">        while (k &gt; 1 &amp;&amp; greater(k/2, k)) </span>
+        {
+<span class="fc" id="L80">            exchange(k, k/2);</span>
+<span class="fc" id="L81">            k = k/2;</span>
+        }
+<span class="fc" id="L83">    }</span>
+    
+    /**
+     * If possible changes the Vertex location in the queue by it's index
+     * in the array. This method is used to rearrange the priority queue.
+     * Time consume O(log n), where n = size of the array
+     * 
+     * @param k index in the array
+     */
+    private void moveDown(int k) 
+    {
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        while (2*k &lt;= objectCount) </span>
+        {
+<span class="fc" id="L96">            int j = 2*k;</span>
+<span class="fc bfc" id="L97" title="All 4 branches covered.">            if (j &lt; objectCount &amp;&amp; greater(j, j+1))</span>
+            {
+<span class="fc" id="L99">                j++;</span>
+            }
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            if (!greater(k, j))</span>
+            {
+<span class="fc" id="L103">                break;</span>
+            }
+<span class="fc" id="L105">            exchange(k, j);</span>
+<span class="fc" id="L106">            k = j;</span>
+<span class="fc" id="L107">        }</span>
+<span class="fc" id="L108">    }</span>
+    
+    /**
+     * Method used to grow the size of the array used by the priority queue.
+     * Time consume O(n), where n = size of the previous array.
+     * 
+     * @param capacity new array size
+     */
+    private void growSize(int capacity) 
+    {
+<span class="fc" id="L118">        Vertex[] temp = new Vertex[capacity];</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        for (int i = 1; i &lt;= objectCount; i++) </span>
+        {
+<span class="fc" id="L121">            temp[i] = priorityQue[i];</span>
+        }
+<span class="fc" id="L123">        priorityQue = temp;</span>
+<span class="fc" id="L124">    }</span>
+    
+    /**
+     * Changes the position of the 2 Vertex by their index value in the array
+     * 
+     * @param i Index in array
+     * @param j Index in array
+     */
+    private void exchange(int i, int j) 
+    {
+<span class="fc" id="L134">        Vertex swap = priorityQue[i];</span>
+<span class="fc" id="L135">        priorityQue[i] = priorityQue[j];</span>
+<span class="fc" id="L136">        priorityQue[j] = swap;</span>
+<span class="fc" id="L137">    }</span>
+    
+    /**
+     * Method to compare 2 Vertex by their index in the array. Comparison is
+     * declared by the Comparator class. Returns true if the first one
+     * is greater than the second one.
+     * 
+     * @param i Index in array
+     * @param j Index in array
+     * @return boolean value
+     */
+    private boolean greater(int i, int j) 
+    {
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        return vertexComparator.compare(priorityQue[i], priorityQue[j]) &gt; 0;</span>
+    }
+    
+    /**
+     * Method to check if the array used by the priority queue is empty or not
+     * 
+     * @return boolean value
+     */
+    public boolean isEmpty() 
+    {
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        return objectCount == 0;</span>
+    }
+    
+    /**
+     * Returns the amount of Objects the priority queue holds
+     * 
+     * @return Object count in integer value
+     */
+    public int size()
+    {
+<span class="fc" id="L170">        return this.objectCount;</span>
+    }
+    
+    /**
+     * Returns the size of the array that the priority queue uses
+     * 
+     * @return Array size in integer value
+     */
+    public int lenght()
+    {
+<span class="fc" id="L180">        return this.priorityQue.length;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
