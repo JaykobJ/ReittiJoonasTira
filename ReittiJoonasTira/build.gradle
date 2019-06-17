@@ -39,7 +39,7 @@ jacocoTestReport {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'ReittiJ'
+                'Main-Class': 'PathFinding.ReittiJ'
         )
     }
 }

@@ -1,20 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-//import org.junit.After;
-//import org.junit.AfterClass;
-//import org.junit.Before;
-//import org.junit.BeforeClass;
 import OwnObjects.Vertex;
 import DataStructure.AlgoSet;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ *Test class for AlgoSet
+ * 
  * @author Jaykob
  */
 public class AlgoSetTest {
@@ -23,7 +14,7 @@ public class AlgoSetTest {
     public void constructorSetCorrectValues()
     {
         AlgoSet test = new AlgoSet(5, 5);
-        int arraySize = (5 + 5) / 2;
+        int arraySize = (5 * 5) / 4;
         
         assertEquals(0, test.getSize());
         assertEquals(arraySize, test.lenght());
@@ -76,29 +67,4 @@ public class AlgoSetTest {
         test.add(v8);//alfa 0,75 -> grow size * 2
         assertEquals(8, test.lenght());
     }
-    
-//    public AlgoSetTest() {
-//    }
-//    
-//    @BeforeClass
-//    public static void setUpClass() {
-//    }
-//    
-//    @AfterClass
-//    public static void tearDownClass() {
-//    }
-//    
-//    @Before
-//    public void setUp() {
-//    }
-//    
-//    @After
-//    public void tearDown() {
-//    }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }

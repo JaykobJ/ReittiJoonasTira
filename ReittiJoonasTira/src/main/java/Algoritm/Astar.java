@@ -5,12 +5,6 @@ import DataStructure.AlgoMinPrioQueue;
 import DataStructure.AlgoSet;
 import java.util.Comparator;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * This class is used to find the shortest path using A* algorithm.
  * 
@@ -23,31 +17,28 @@ public class Astar
         return (int)((v1.getFCost() - v2.getFCost())*100);
     };
     AlgoMinPrioQueue mpq;
-    //PriorityQueue<Vertex> mpq; //Minimum-priority Queue
     AlgoSet s;
-    //Set<Vertex> s; //Set for finished shortest path objects
     Vertex[][] graph; //2D array to be searched
     boolean endFound;
     final double hvWeight = 1; //Weight for horizontal and Vertical movement
     final double diagonalWeight = Math.sqrt(2); //Weight for diagonal movement
     long timer; //Time for the algorithm to run from start to finish
-    final double maxValue = 99999;
+    final double maxValue = Double.MAX_VALUE;
     
     /**
-     * Constructor for the A* class. Calling this method creates a new
-     * empty HashSet and empty PrioityQueue. The PrirorityQueue compares 
-     * the objects (Vertex) fCost value. fCost = distance from starting Vertex
-     * + estimated distance from the end Vertex (Heuristic value).
+     * Constructor for the A* class.
      */
     public Astar()
     {
-        //this.s = new HashSet();
-        //this.mpq = new PriorityQueue(vertexComparator);
+        
     }
     
     /**
      * Method to search the shortest path from start Vertex to the end Vertex.
-     * Updates the class attributes information after it is done.
+     * Updates the class attributes information after it is done. The 
+     * PrirorityQueue compares the objects (Vertex) fCost value. 
+     * fCost = distance from starting Vertex + estimated distance from the
+     * end Vertex (Heuristic value).
      * 
      * @param map 2d Array for Vertex objects.
      * @param start starting Vertex.
@@ -59,7 +50,7 @@ public class Astar
         this.s = new AlgoSet(map.length, map[0].length);
         endFound = false;
         this.graph = map;
-        
+        long startTime = System.currentTimeMillis();
         
         start.setDistance(0); //set start Vertex dinstance to 0
         start.setFCost(0); //set fCost to 0
@@ -81,11 +72,15 @@ public class Astar
                 }
             }
         }
-        long startTime = System.currentTimeMillis();
         //remove vertex with minimum priority untill destination Vertex is found
         while(!mpq.isEmpty() && endFound == false)
         {
             Vertex current = mpq.remove();
+            if(current.equals(end))
+            {
+                endFound = true;
+                continue;
+            }
             if(s.contains(current))
             {
                 continue;
@@ -109,8 +104,7 @@ public class Astar
      * If the neighbour Vertex is all ready in minimum-priority queue and it's 
      * fCost is updated then it is added to the priority queue again. This
      * is done because updating specific object in the priority queue takes O(n)
-     * time and changing the attribute of an object doesn't change the order
-     * inside the priority queue.
+     * time
      * 
      * @param current Current Vertex witch neighbours are to be checked 
      * @param end Destination Vertex
@@ -218,13 +212,18 @@ public class Astar
     /**
      * Returns boolean value if the end Vertex was found or not
      * 
-     * @return boolean
+     * @return boolean value
      */
     public boolean endFound()
     {
         return this.endFound;
     }
     
+    /**
+     * Returns time consumed (ms) by the algorithm to finish
+     * 
+     * @return long value
+     */
     public long getTimer()
     {
         return this.timer;

@@ -1,10 +1,5 @@
 package PathFinding;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import OwnObjects.Vertex;
 import Algoritm.Dijkstra;
 import Algoritm.Astar;
@@ -73,7 +68,6 @@ public class View extends GridPane
      * @param end Destination Vertex
      */
     private void paintGraph(Vertex[][] graph, Vertex start, Vertex end){
-        long startTime = System.currentTimeMillis();
         for(int x = 0; x < graph.length; x++)
         {
             for(int y = 0; y < graph[x].length; y++)
@@ -121,9 +115,15 @@ public class View extends GridPane
             add(canvas, end.getY(), end.getX());
             showPath(end.getParent());
         }
-        long endTime = System.currentTimeMillis();
-        long timer = endTime - startTime;
-        //System.out.println("------ TIME TO DRAW GRAPH ------ " + timer + "ms");
+        if(start.equals(end))
+        {
+            Pane canvas = new Pane();
+            canvas.setPrefSize(20,20);
+            canvas.setMinSize(20,20);
+            canvas.setMaxSize(20,20);
+            canvas.setStyle("-fx-background-color: red;");
+            add(canvas, end.getY(), end.getX());
+        }
     }
     
     /**
@@ -146,7 +146,7 @@ public class View extends GridPane
         }
         else
         {
-            canvas.setStyle("-fx-background-color: pink;");
+            canvas.setStyle("-fx-background-color: lime;");
         }
     }
     
@@ -158,7 +158,6 @@ public class View extends GridPane
      */
     public View (Vertex[][] graph)
     {
-        long startTime = System.currentTimeMillis();
         setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         setHgap(1);
         setVgap(1);
@@ -196,8 +195,5 @@ public class View extends GridPane
                 }
             }
         }
-        long endTime = System.currentTimeMillis();
-        long timer = endTime - startTime;
-        //System.out.println("------ TIME TO DRAW empty GRAPH ------ " + timer + "ms");
     }
 }

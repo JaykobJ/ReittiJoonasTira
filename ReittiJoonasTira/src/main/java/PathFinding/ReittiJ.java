@@ -1,11 +1,5 @@
 package PathFinding;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import OwnObjects.Vertex;
 import Algoritm.Dijkstra;
 import Algoritm.Astar;
@@ -24,9 +18,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -41,19 +37,21 @@ public class ReittiJ extends Application
     
     @Override
     public void start(Stage primaryStage) 
-    {  
-        this.mapFile = "rand.map";
-        this.startX = 0;
-        this.startY = 0;
-        this.endX = 200;
-        this.endY = 200;
-//        this.startX = 60;
-//        this.startY = 120;
-//        this.endX = 99;
-//        this.endY = 182;
-        
-        //information about both algoritm
+    {
+        //Decimal formating to 2 decimal
         DecimalFormat df = new DecimalFormat("#.##");
+        
+        //Text fields to get the start and end coordinates
+        Label infoLabel = new Label("Please write START __X__ and __Y__ coordinates and DESTINATION __X__ and __Y__ coordinates on the text field below");
+        TextField startXfield = new TextField();
+        startXfield.setPrefWidth(70);
+        TextField startYfield = new TextField();
+        startYfield.setPrefWidth(70);
+        TextField endXfield = new TextField();
+        endXfield.setPrefWidth(70);
+        TextField endYfield = new TextField();
+        endYfield.setPrefWidth(70);
+        Label errorLabel = new Label("");
         
         //buttons to display the visual grid view
         //Astar button
@@ -64,30 +62,42 @@ public class ReittiJ extends Application
             @Override
             public void handle(ActionEvent e) 
             {
-                //Astar view with scroller
-                Vertex[][] aMap = readMap();
-                Vertex aStart = aMap[startX][startY];
-                Vertex aEnd = aMap[endX][endY];
-                Astar astar = new Astar();
-                View astarView = new View(aMap, aStart, aEnd, astar);
-                ScrollPane scroll1 = new ScrollPane();
-                scroll1.setContent(astarView);
-                
-                BorderPane pane = new BorderPane();
-                pane.setCenter(scroll1);
-                Label aTime = new Label("Total time consume of algorith 'Astar': " + astar.getTimer() + "ms");
-                Label aDistance = new Label("Total distance of path 'Astar': END POINT NOT FOUND");
-                if(astar.endFound())
+                try
                 {
-                    aDistance = new Label("Total distance of path 'Astar': " + df.format(astar.getVertex(aEnd.getX(), aEnd.getY()).getDistance()));
+                    errorLabel.setText("");
+                    startX = Integer.parseInt(startXfield.getText());
+                    startY = Integer.parseInt(startYfield.getText());
+                    endX = Integer.parseInt(endXfield.getText());
+                    endY = Integer.parseInt(endYfield.getText());
+                    //Astar view with scroller
+                    Vertex[][] aMap = readMap();
+                    Vertex aStart = aMap[startX][startY];
+                    Vertex aEnd = aMap[endX][endY];
+                    Astar astar = new Astar();
+                    View astarView = new View(aMap, aStart, aEnd, astar);
+                    
+                    ScrollPane scroll1 = new ScrollPane();
+                    scroll1.setContent(astarView);
+
+                    BorderPane pane = new BorderPane();
+                    pane.setCenter(scroll1);
+                    Label aTime = new Label("Total time consume of algorith 'Astar': " + astar.getTimer() + "ms");
+                    Label aDistance = new Label("Total distance of path 'Astar': END POINT NOT FOUND");
+                    if(astar.endFound())
+                    {
+                        aDistance = new Label("Total distance of path 'Astar': " + df.format(astar.getVertex(aEnd.getX(), aEnd.getY()).getDistance()));
+                    }
+                    HBox info = new HBox(aTime, aDistance);
+                    info.setSpacing(40);
+                    pane.setTop(info);
+                    Stage stage = new Stage();
+                    stage.setTitle("astar window");
+                    stage.setScene(new Scene(pane, 900, 800));
+                    stage.show();
+                } catch (Exception ex){
+                    errorLabel.setText("Start or end point is a wall or out of bounds");
+                    errorLabel.setTextFill(Color.RED);
                 }
-                HBox info = new HBox(aTime, aDistance);
-                info.setSpacing(40);
-                pane.setTop(info);
-                Stage stage = new Stage();
-                stage.setTitle("astar window");
-                stage.setScene(new Scene(pane, 900, 800));
-                stage.show();
             }
         });
         //Dijkstra button
@@ -98,81 +108,104 @@ public class ReittiJ extends Application
             @Override
             public void handle(ActionEvent e) 
             {
-                //Dijkstra view with scroller
-                Vertex[][] dMap = readMap();
-                Vertex dStart = dMap[startX][startY];
-                Vertex dEnd = dMap[endX][endY];
-                Dijkstra dijkstra = new Dijkstra();
-                View dijkstraView = new View(dMap, dStart, dEnd, dijkstra);
-                ScrollPane scroll2 = new ScrollPane();
-                scroll2.setContent(dijkstraView);
-                
-                BorderPane pane = new BorderPane();
-                pane.setCenter(scroll2);
-                Label dTime = new Label("Total time consume of algorith 'Dijkstra': " + dijkstra.getTimer() + "ms");
-                Label dDistance = new Label("Total distance of path 'Dijkstra': END POINT NOT FOUND");
-                if(dijkstra.endFound())
+                try
                 {
-                    dDistance = new Label("Total distance of path 'Dijkstra': " + df.format(dijkstra.getVertex(dEnd.getX(), dEnd.getY()).getDistance()));
+                    errorLabel.setText("");
+                    startX = Integer.parseInt(startXfield.getText());
+                    startY = Integer.parseInt(startYfield.getText());
+                    endX = Integer.parseInt(endXfield.getText());
+                    endY = Integer.parseInt(endYfield.getText());
+                    //Dijkstra view with scroller
+                    Vertex[][] dMap = readMap();
+                    Vertex dStart = dMap[startX][startY];
+                    Vertex dEnd = dMap[endX][endY];
+                    Dijkstra dijkstra = new Dijkstra();
+                    View dijkstraView = new View(dMap, dStart, dEnd, dijkstra);
+                    ScrollPane scroll2 = new ScrollPane();
+                    scroll2.setContent(dijkstraView);
+
+                    BorderPane pane = new BorderPane();
+                    pane.setCenter(scroll2);
+                    Label dTime = new Label("Total time consume of algorith 'Dijkstra': " + dijkstra.getTimer() + "ms");
+                    Label dDistance = new Label("Total distance of path 'Dijkstra': END POINT NOT FOUND");
+                    if(dijkstra.endFound())
+                    {
+                        dDistance = new Label("Total distance of path 'Dijkstra': " + df.format(dijkstra.getVertex(dEnd.getX(), dEnd.getY()).getDistance()));
+                    }
+                    HBox info = new HBox(dTime, dDistance);
+                    info.setSpacing(40);
+                    pane.setTop(info);
+                    Stage stage = new Stage();
+                    stage.setTitle("dijkstra window");
+                    stage.setScene(new Scene(pane, 900, 800));
+                    stage.show();
+                } catch (Exception ex){
+                    errorLabel.setText("Start or end point is a wall or out of bounds");
+                    errorLabel.setTextFill(Color.RED);
                 }
-                HBox info = new HBox(dTime, dDistance);
-                info.setSpacing(40);
-                pane.setTop(info);
-                Stage stage = new Stage();
-                stage.setTitle("dijkstra window");
-                stage.setScene(new Scene(pane, 900, 800));
-                stage.show();
             }
         });
         
         //Choise box for choosing the map
         ChoiceBox<String> mapString = new ChoiceBox();
         mapString.setValue(mapFile);
-        File folder = new File(System.getProperty("user.dir"));
-        File[] listOfFiles = folder.listFiles();
-
-        for (int i = 0; i < listOfFiles.length; i++) 
+        try
         {
-          if (listOfFiles[i].isFile()) 
-          {
-            String mapName = listOfFiles[i].getName();
-            if(mapName.contains(".map"))
+            File folder = new File(System.getProperty("user.dir"));
+            File[] listOfFiles = folder.listFiles();
+            
+            for (int i = 0; i < listOfFiles.length; i++) 
             {
-                mapString.getItems().add(mapName);
+              if (listOfFiles[i].isFile()) 
+              {
+                String mapName = listOfFiles[i].getName();
+                if(mapName.contains(".map"))
+                {
+                    mapString.getItems().add(mapName);
+                    if(i == listOfFiles.length - 1)
+                    {
+                        mapFile = mapString.getValue();
+                    }
+                }
+              }
             }
-          }
+            if(mapString.getValue() == null || mapString.getValue().equals("") || listOfFiles.length < 1)
+            {
+                errorLabel.setText("Please choose a map");
+                errorLabel.setTextFill(Color.RED);
+            }
+            mapString.setOnAction(new EventHandler<ActionEvent>() 
+            {
+                @Override
+                public void handle(ActionEvent e) 
+                {
+                    mapFile = mapString.getValue();
+                    errorLabel.setText("");
+                }
+            });
+        } catch (Exception ex){
+            ex.printStackTrace();
         }
-        mapString.setOnAction(new EventHandler<ActionEvent>() 
-        {
-            @Override
-            public void handle(ActionEvent e) 
-            {
-                mapFile = mapString.getValue();
-            }
-        });
+        
         
         //Main window
         ScrollPane scrollMain = new ScrollPane();
-        HBox btnBox = new HBox(aButton, dButton);
+        HBox textBox = new HBox(startXfield, startYfield, endXfield, endYfield);
+        textBox.setSpacing(50);
+        HBox btnBox = new HBox(mapString, aButton, dButton);
         btnBox.setSpacing(50);
-        VBox mainPane = new VBox(btnBox, mapString);
+        VBox mainPane = new VBox(infoLabel, errorLabel, textBox, btnBox);
         mainPane.setMinSize(600, 100);
         mainPane.setSpacing(20);
         scrollMain.setContent(mainPane);
         
         //stage info
         Scene scene = new Scene(scrollMain, 800, 300);
-        primaryStage.setTitle("Shortest Path");
-        System.out.println("Title set");      
+        primaryStage.setTitle("Shortest Path");     
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    /**
-     * Main method of the class.
-     * 
-     * @param args the command line arguments
-     */
     public static void main(String[] args) 
     {
         launch(args);
@@ -183,11 +216,10 @@ public class ReittiJ extends Application
      * Generates a 2D Vertex array from this file. This 2D array is used by
      * the algorithms
      * 
-     * @return Vertex[][]
+     * @return Vertex[][] Representation of the map in 2d Vertex array
      */
     private Vertex[][] readMap()
     {
-        long startTime = System.currentTimeMillis();
         BufferedReader reader;    
         String mapType;
         int mapHeight = 0;
@@ -207,15 +239,12 @@ public class ReittiJ extends Application
                 switch(i){
                     case 0:
                         mapType = line;
-                        //System.out.println("Map: " + mapType);
                         break;
                     case 1:
                         mapHeight = digitFromLine(line);
-                        //System.out.println("Map Height: " + mapHeight);
                         break;
                     case 2:
                         mapWidth = digitFromLine(line);
-                        //System.out.println("Map Width: " + mapWidth);
                         break;
                     default:
                         break;
@@ -255,9 +284,6 @@ public class ReittiJ extends Application
         } catch(IOException e) {
             e.printStackTrace();
         }
-        long endTime = System.currentTimeMillis();
-        long timer = endTime - startTime;
-        //System.out.println("Time to read: " + timer + " ms");
         return map;
     }
     
@@ -265,7 +291,7 @@ public class ReittiJ extends Application
      * Method used to read the map size from the .map files first 4 info rows
      * 
      * @param line Text row from the .map file
-     * @return Integer
+     * @return Integer value
      */
     private int digitFromLine(String line)
     {

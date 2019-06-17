@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-//import org.junit.After;
-//import org.junit.AfterClass;
-//import org.junit.Before;
-//import org.junit.BeforeClass;
 import OwnObjects.Vertex;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test class for Vertex
  *
  * @author Jaykob
  */
@@ -42,7 +33,7 @@ public class VertexTest {
     }
     
     @Test
-    public void coordinatesTest()
+    public void coordinatesMethodTest()
     {
         Vertex testVertex = new Vertex(1, 2, '.');
         assertEquals("(1, 2)", testVertex.coordinates());
@@ -68,7 +59,7 @@ public class VertexTest {
     }
     
     @Test
-    public void parseMarkerTest()
+    public void parseMarkerMethodTest()
     {
         Vertex testVertex = new Vertex(1, 1, '.');
         assertEquals(1, testVertex.getMarker());
@@ -83,7 +74,7 @@ public class VertexTest {
     }
     
     @Test
-    public void setCoordinates()
+    public void setCoordinatesTest()
     {
         Vertex test = new Vertex();
         test.setX(5);
@@ -125,29 +116,4 @@ public class VertexTest {
         assertEquals(true, test.hasParent());
         assertEquals(parent, test.getParent());
     }
-    
-//    public VertexTest() {
-//    }
-//    
-//    @BeforeClass
-//    public static void setUpClass() {
-//    }
-//    
-//    @AfterClass
-//    public static void tearDownClass() {
-//    }
-//    
-//    @Before
-//    public void setUp() {
-//    }
-//    
-//    @After
-//    public void tearDown() {
-//    }
-//
-//    // TODO add test methods here.
-//    // The methods must be annotated with annotation @Test. For example:
-//    //
-//    // @Test
-//    // public void hello() {}
 }
