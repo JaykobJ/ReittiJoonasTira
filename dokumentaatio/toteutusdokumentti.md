@@ -1,10 +1,37 @@
-Ohjelmaa käytetään käyttöliittymän kautta. Käyttö liittymässä valitaan ajettava algoritmi, sekä kartta josta reitti haetaan. Käyttäjän valittua polun etsintä algoritmi avautuu uusi ruutu johon generoidaan kartta jossa  on valmiina lyhyin polku sekä alueet joita on käyetty algoritmien aikana. Algoritmit saavat syötteenä kartasta tehdyn 2D solmu taulukon, lähtö sekä loppu pisteen. Algoritmi käyttää apunaan niille luotuja hajautustaulua ja prioriteetti jonoa. 
+Ohjelman rakenne on seuraava:
+Algoritmit:
+  - A* ja Dijkstra
+  - Algoritmit saavat syötteenä solmu matriisin, alku- ja päätepisteen. Nämä käyvät kartan läpi ja muuttavat solmujen tietoja jotta graafisen osuuden piirtävä luokka osaa värittää oikeat solmut/ koordinaatit
+   - Algoritmi luokat sisältävät ominaisuudet niiden suorittamisesta
+
+Tietorakenteet:
+  - Hajautustaulu ja minimi-prioriteettijono
+  - Näitä tietorakentneita käytetään hyödyksi algoritmi luokissa.
+  
+Solmu luokka:
+  - Luokka pitää sisällään koordinaattien tietoja, sekä atribuutteja joita hyödynnetään algoritmeissa (painoarvo, f arvo, heuristinen arvo ja solmun vanhempi). Luokkassa on myös mm. laskentaoperaatioita joita hyödynnetään arvojen muuttamisessa.
+  
+Graafinen esitys:
+  - Pääluokka joka avaa graafisen käyttöliittymän sekä paneeli luokka joka luo algoritmin polusta taulukkopaneelin ja värjää vaaditut solmut
+
+Testi luokka:
+  - Luokkaa hyödynnetään lähinnä testien uusimisessa, sekä testituloksissa
+
+Ohjelmaa käytetään käyttöliittymän kautta. Käyttöliittymässä valitaan ajettava algoritmi, kartta josta reitti haetaan sekä lähtö, että päätepiste. Käyttäjän valittua edellämainitut ominaisuudet ja painettua valittua algoritmi painiketta polunetsintäalgoritmi käynnistyy. Algoritmi muuttaa solmujen tietoja ja visuaalisen ruudun generoiva luokka hyödyntää näitä tietoja tulostaessa valmiin reitin uuteen ikkunaan. Algoritmi luokka pitää sisällään myös tiedon onko päätepiste saavutettu sekä tämän etsimiseen käytetyn ajan. Algoritmit saavat syötteenä kartasta tehdyn 2D solmu matriisin, lähtö- sekä päätepisteen. Algoritmi käyttää apunaan niille luotuja hajautustaulua ja prioriteettijonoa. 
 
 hajautustaulun haku ja lisäys toimivat suurimmaksi osaksi O(1) taulun koon suurentaminen O(n)
-prioriteettu jonon poisto O(1), lisäys O(log n), taulun koon suurentaminen O(n)
-Dijkstra: O((v+e) log v) A*: O(|E|+|V|log|V|)
+prioriteettu jonon poisto ja lisäys O(log n), taulun koon suurentaminen O(n)
+Dijkstra: O(|E|+|V|log|V|) 
+A*: O(|E|+|V|log(h*(V))
 
-puutteet: ohjelma on vielä hieman kesken ja jump point search jää toteuttamatta. Käyttöliittymää tulee vielä parantaa, jotta käyttäjä saa syötettyä koordinaatit kartasta. Aikatestaus luokka on vielä kesken.
+
+puutteet: 
+- Jump Point Search jää ajan puutteen takia toteuttamatta
+- Käyttöliittymä on hyvin yksinkertainen. Jatkokehityksessä käyttöliittymää voisi parantaa
+
+parannusehdotukset:
+- Käyttäjälle voisi antaa mahdolliisuuden vaihtaa A* algoritmin optimointia
+- Jump Point Searchin lisäsys projektiin
 
 Lähteet
 Introduction to algorithms, 2009, Cormen 
