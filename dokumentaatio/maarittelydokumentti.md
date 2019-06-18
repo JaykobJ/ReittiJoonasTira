@@ -20,6 +20,3 @@ Lähteet:
 Introduction to algorithms, 2009, Cormen
 http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
 Kartat haetaan osoitteesta: https://www.movingai.com/benchmarks/grids.html
-
-Tavoitteena olevat aika- ja tilavaativuudet (m.m. O-analyysit)
-Lähteet
