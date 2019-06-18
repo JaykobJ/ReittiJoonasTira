@@ -23,6 +23,7 @@ public class Astar
     final double hvWeight = 1; //Weight for horizontal and Vertical movement
     final double diagonalWeight = Math.sqrt(2); //Weight for diagonal movement
     long timer; //Time for the algorithm to run from start to finish
+    long nanoTimer; 
     final double maxValue = Double.MAX_VALUE;
     
     /**
@@ -51,6 +52,7 @@ public class Astar
         endFound = false;
         this.graph = map;
         long startTime = System.currentTimeMillis();
+        long startTimeNano = System.nanoTime();
         
         start.setDistance(0); //set start Vertex dinstance to 0
         start.setFCost(0); //set fCost to 0
@@ -89,7 +91,9 @@ public class Astar
             relaxEdges(current, end);
         }
         long endTime = System.currentTimeMillis();
+        long endTimeNano = System.nanoTime();
         this.timer = endTime - startTime;
+        this.nanoTimer = endTimeNano - startTimeNano;
     }
     
     /**
@@ -227,5 +231,10 @@ public class Astar
     public long getTimer()
     {
         return this.timer;
+    }
+    
+    public long getNanoTimer()
+    {
+        return this.nanoTimer;
     }
 }
