@@ -10,7 +10,7 @@ public class Vertex{
     //class properties
     int xCoordinate;
     int yCoordinate;
-    int marker;
+    int marker; 
     double distance; //distance form the start vertex
     double heuristic; //distance from the end vertex
     double fCost; //function cost of distance + heuristic
