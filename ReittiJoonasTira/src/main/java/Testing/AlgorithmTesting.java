@@ -28,7 +28,7 @@ public class AlgorithmTesting {
     {
         //maps without obstacles
         testMapsWithoutObstacles();
-        testMapsWithObstacles();
+//        testMapsWithObstacles();
     }
     
     private static void testMapsWithoutObstacles()
@@ -43,6 +43,7 @@ public class AlgorithmTesting {
         astarTestMethod("testMap6.map", 127, 127, 252, 252);
         astarTestMethod("testMap7.map", 179, 179, 357, 357);
         astarTestMethod("testMap8.map", 253, 253, 505, 505);
+        astarTestMethod("testMap9.map", 358, 358, 715, 715);
         dijkstraTestMethod("testMap1.map", 23, 23, 43, 43);
         dijkstraTestMethod("testMap2.map", 32, 32, 62, 62);
         dijkstraTestMethod("testMap3.map", 45, 45, 89, 89);
@@ -51,6 +52,7 @@ public class AlgorithmTesting {
         dijkstraTestMethod("testMap6.map", 127, 127, 252, 252);
         dijkstraTestMethod("testMap7.map", 179, 179, 357, 357);
         dijkstraTestMethod("testMap8.map", 253, 253, 505, 505);
+        dijkstraTestMethod("testMap9.map", 358, 358, 715, 715);
         System.out.println("---------------------");
     }
     
