@@ -9,6 +9,8 @@ Tietorakenteet ja algoritmit harjoitustyö
 
 [Käyttöohje](dokumentaatio/käyttöohje.md)
 
+----------------------
+
 [Viikkoraportti 1](dokumentaatio/viikkoraportti1.md)
 
 [Viikkoraportti 2](dokumentaatio/viikkoraportti2.md)
@@ -21,6 +23,13 @@ Tietorakenteet ja algoritmit harjoitustyö
 
 [Viikkoraportti 6](dokumentaatio/viikkoraportti6.md)
 
+----------------------
+
+[Täältä javadokkiin](/ReittiJoonasTira/build/docs/javadoc/)
+
+[Täältä jar](/ReittiJoonasTira/build/libs/)
+
+----------------------
 
 Vertaisarviointi 1: https://github.com/idaliisa/MineSweeper/issues/1
 
