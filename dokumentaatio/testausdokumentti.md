@@ -15,6 +15,9 @@ Kuvaajia on luotu 3 kappaletta. 1) vertailtu algoritmien suorituskykyä. 2) ja 3
 2)
 ![](/dokumentaatio/kuvat/esteet%C3%B6n%20kartta/DijkstraTime.PNG)
 
+Vertailukohteeksi Dijkstra algoritmin aikavaativuus kuvaajaan piirrettynä. O((V+E)*log(v))
+![](/dokumentaatio/kuvat/DijkstraTimecomplex.PNG)
+
 3)
 ![](/dokumentaatio/kuvat/esteet%C3%B6n%20kartta/AstarTime.PNG)
 
