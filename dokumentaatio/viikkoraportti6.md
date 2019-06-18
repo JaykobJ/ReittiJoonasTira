@@ -21,9 +21,15 @@ Toteutan testausluokan, ajan testit, tulkitsen tuloksia ja viimeistelen projekti
 Huomasin, että en ole päivittänyt viikkoraportteihin käytettyä työaikaa. Tässä kuvaus viikottaisesta työajasta. Työaikaa on kulunut melko paljon bugien ja ongelmien selvittämiseen sekä korjaamiseen. Lisäksi pidempi tauko koodailusta tuotti vaikeuksia kurssin aikana:
 
 vk7: 8 h
+
 vk6: 35 h
+
 vk5: 25 h
+
 vk4: 15 h
+
 vk3: 10 h
+
 vk2: 7 h
+
 vk1: 5 h
