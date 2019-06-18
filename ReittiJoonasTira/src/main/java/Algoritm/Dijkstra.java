@@ -51,7 +51,6 @@ public class Dijkstra
         this.s = new AlgoSet(map.length*2, map[0].length*2);
         endFound = false;
         this.graph = map;
-        long startTime = System.currentTimeMillis();
         
         start.setDistance(0); //set start Vertex dinstance to 0
         mpq.add(start);
@@ -71,6 +70,7 @@ public class Dijkstra
             }
         }
         
+        long startTime = System.currentTimeMillis();
         //remove vertex with minimum priority untill destination Vertex is found
         while(!mpq.isEmpty() && endFound == false)
         {

@@ -51,8 +51,6 @@ public class Astar
         this.s = new AlgoSet(map.length, map[0].length);
         endFound = false;
         this.graph = map;
-        long startTime = System.currentTimeMillis();
-        long startTimeNano = System.nanoTime();
         
         start.setDistance(0); //set start Vertex dinstance to 0
         start.setFCost(0); //set fCost to 0
@@ -74,6 +72,9 @@ public class Astar
                 }
             }
         }
+        
+        long startTime = System.currentTimeMillis();
+        long startTimeNano = System.nanoTime();
         //remove vertex with minimum priority untill destination Vertex is found
         while(!mpq.isEmpty() && endFound == false)
         {

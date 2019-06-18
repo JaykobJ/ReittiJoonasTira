@@ -28,7 +28,7 @@ public class AlgorithmTesting {
     {
         //maps without obstacles
         testMapsWithoutObstacles();
-//        testMapsWithObstacles();
+        testMapsWithObstacles();
     }
     
     private static void testMapsWithoutObstacles()
@@ -76,9 +76,9 @@ public class AlgorithmTesting {
     {
         DecimalFormat df = new DecimalFormat("#.##");
         String mapFile = mapName;
-        long[] timeArray = new long[20];
-        long[] nanoTimeArray = new long[20];
-        double[] distanceArray = new double[20];
+        long[] timeArray = new long[40];
+        long[] nanoTimeArray = new long[40];
+        double[] distanceArray = new double[40];
         Vertex[][] map = readMap(mapFile);
         int size = map.length;
         for(int i = 0; i < timeArray.length; i++)
