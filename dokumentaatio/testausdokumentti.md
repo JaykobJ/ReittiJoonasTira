@@ -12,21 +12,23 @@ Kuvaajia on luotu 3 kappaletta. 1) vertailtu algoritmien suorituskykyä. 2) ja 3
 1) Kuvasta näkee, että A* löytää nopeimman reitin huomattavasti nopeammin kuin Dijkstran algoritmi
 ![](/dokumentaatio/kuvat/esteet%C3%B6n%20kartta/AstarDijkstraCompareTime.PNG)
 
-2)
+2) 
 ![](/dokumentaatio/kuvat/esteet%C3%B6n%20kartta/DijkstraTime.PNG)
 
-Vertailukohteeksi Dijkstra algoritmin aikavaativuus kuvaajaan piirrettynä. O((V+E)*log(v))
+Vertailukohteeksi Dijkstra algoritmin aikavaativuus kuvaajaan piirrettynä. O((V+E)*log(V))
 ![](/dokumentaatio/kuvat/DijkstraTimecomplex.PNG)
 
-3)
+3) 
 ![](/dokumentaatio/kuvat/esteet%C3%B6n%20kartta/AstarTime.PNG)
+
+Kuvaajista huomataan, että tässä testissä Dijkstran algoritmi on melko samanlainen kuin oletetun aikavaativuuden kuvaaja, kun taas A*:n kuvaaja on enemmän lineaarinen. 
 
 
 
 Verkosta otettu este kartta:
 
 Pää fokuksena tässä testissä on algoritmien lyhyimmän reitin vertailu, sekä oheis vertailun kohteena algoritmien ajankäyttö.
-Algoritmien tehokkuutta on testattu myös kartoilla jossa on esteitä. Pisteet on valittu niin, että matkan etäisyys kasvaa, sekä suoran reitin varrella olisi mahdollisimman paljon esteitä. Kartat on valittu summan mutikassa.
+Algoritmien tehokkuutta on testattu myös kartoilla jossa on esteitä. Pisteet on valittu niin, että suoran reitin varrella olisi mahdollisimman paljon esteitä. Kartat on valittu summan mutikassa.
 
 Tässä testissä karttoina on käytetty baldursgate pelin originaaleja karttoja osoitteesta: https://www.movingai.com/benchmarks/bgmaps/index.html. Testin kartat (AR0014SR, AR0071SR, AR0205SR ja AR0300SR) löytyvät ohjelman testikartat kansiosta.
 
@@ -38,7 +40,7 @@ Tässä testissä karttoina on käytetty baldursgate pelin originaaleja karttoja
 
 Kuvaajista voidaan huomata, että kartassa jossa on huomattavasti esteitä A* löytää reitin nopeammin, mutta reitin pituus on huonompi verrattuna Dijkstran algoritmin löytämään nopeimpaan reittiin. 
 
-Testit on toteutettu projektin omassa testing paketissa olevassa AlgorithmTesting luokassa. Testi voidaan helposti toistaa ajamalla luokka uudestaan. Itselläni testien ajamiseen menee noin 5.5 minuuttia.
+Testit on toteutettu projektin omassa testing paketissa olevassa AlgorithmTesting luokassa. Testi voidaan helposti toistaa ajamalla luokka uudestaan. Itselläni testien ajamiseen menee noin 14 minuuttia.
 Tulokset on kirjattu ylös Exceliin jossa niistä on luotu kuvaaja. A* algoritmin nopeuden testaamisessa on käytetty myös nanosekuntteja jotta sen nopeus-kuvaajasta saataisiin tarkempaa tietoa.
 
 Projekti sisältää testiluokat hajautustaululle, minimi.prioriteettijonolle, A* - ja dijkstra algoritmille sekä ohjelmassa käytettävään solmu (Vertex) luokalle. Nämä testit on toteutettu JUnit testin avulla.
