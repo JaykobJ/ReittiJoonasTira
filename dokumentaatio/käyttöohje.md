@@ -2,9 +2,9 @@ Ohjelman voi ottaa käyttöön lataamalla .jar tiedoston tästä github reposito
 
 Käyttöliittymän ruudun kokoa voi muuttaa vetämällä ikkunan sivuista ja näkymissä on vetopalkki sivussa jonka avulla isompaa ruutua voi selailla.
 
-------------------------------------
-
 esimerkki .map tiedoston sisällöstä:
+
+------------------------------------
 
 type octile
 
