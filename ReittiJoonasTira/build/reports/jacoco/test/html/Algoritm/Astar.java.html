@@ -51,50 +51,51 @@ public class Astar
 <span class="fc" id="L51">        this.s = new AlgoSet(map.length, map[0].length);</span>
 <span class="fc" id="L52">        endFound = false;</span>
 <span class="fc" id="L53">        this.graph = map;</span>
-<span class="fc" id="L54">        long startTime = System.currentTimeMillis();</span>
-<span class="fc" id="L55">        long startTimeNano = System.nanoTime();</span>
         
-<span class="fc" id="L57">        start.setDistance(0); //set start Vertex dinstance to 0</span>
-<span class="fc" id="L58">        start.setFCost(0); //set fCost to 0</span>
-<span class="fc" id="L59">        mpq.add(start);</span>
+<span class="fc" id="L55">        start.setDistance(0); //set start Vertex dinstance to 0</span>
+<span class="fc" id="L56">        start.setFCost(0); //set fCost to 0</span>
+<span class="fc" id="L57">        mpq.add(start);</span>
         
         //Setting distance and fCost to 99 999 to all objects
         //except start object
-<span class="fc bfc" id="L63" title="All 2 branches covered.">        for(Vertex[] row : graph)</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for(Vertex[] row : graph)</span>
         {
-<span class="fc bfc" id="L65" title="All 2 branches covered.">            for(int i = 0; i &lt; row.length; i++)</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            for(int i = 0; i &lt; row.length; i++)</span>
             {
-<span class="fc bfc" id="L67" title="All 2 branches covered.">                if(row[i] != null)</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">                if(row[i] != null)</span>
                 {
-<span class="fc bfc" id="L69" title="All 2 branches covered.">                    if(!row[i].equals(start))</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">                    if(!row[i].equals(start))</span>
                     {
-<span class="fc" id="L71">                        row[i].setFCost(maxValue);</span>
-<span class="fc" id="L72">                        row[i].setDistance(maxValue);</span>
+<span class="fc" id="L69">                        row[i].setFCost(maxValue);</span>
+<span class="fc" id="L70">                        row[i].setDistance(maxValue);</span>
                     }
                 }
             }
         }
+        
+<span class="fc" id="L76">        long startTime = System.currentTimeMillis();</span>
+<span class="fc" id="L77">        long startTimeNano = System.nanoTime();</span>
         //remove vertex with minimum priority untill destination Vertex is found
-<span class="fc bfc" id="L78" title="All 4 branches covered.">        while(!mpq.isEmpty() &amp;&amp; endFound == false)</span>
+<span class="fc bfc" id="L79" title="All 4 branches covered.">        while(!mpq.isEmpty() &amp;&amp; endFound == false)</span>
         {
-<span class="fc" id="L80">            Vertex current = mpq.remove();</span>
-<span class="pc bpc" id="L81" title="1 of 2 branches missed.">            if(current.equals(end))</span>
+<span class="fc" id="L81">            Vertex current = mpq.remove();</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">            if(current.equals(end))</span>
             {
-<span class="nc" id="L83">                endFound = true;</span>
-<span class="nc" id="L84">                continue;</span>
+<span class="nc" id="L84">                endFound = true;</span>
+<span class="nc" id="L85">                continue;</span>
             }
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">            if(s.contains(current))</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">            if(s.contains(current))</span>
             {
-<span class="nc" id="L88">                continue;</span>
+<span class="nc" id="L89">                continue;</span>
             }
-<span class="fc" id="L90">            s.add(current);</span>
-<span class="fc" id="L91">            relaxEdges(current, end);</span>
-<span class="fc" id="L92">        }</span>
-<span class="fc" id="L93">        long endTime = System.currentTimeMillis();</span>
-<span class="fc" id="L94">        long endTimeNano = System.nanoTime();</span>
-<span class="fc" id="L95">        this.timer = endTime - startTime;</span>
-<span class="fc" id="L96">        this.nanoTimer = endTimeNano - startTimeNano;</span>
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L91">            s.add(current);</span>
+<span class="fc" id="L92">            relaxEdges(current, end);</span>
+<span class="fc" id="L93">        }</span>
+<span class="fc" id="L94">        long endTime = System.currentTimeMillis();</span>
+<span class="fc" id="L95">        long endTimeNano = System.nanoTime();</span>
+<span class="fc" id="L96">        this.timer = endTime - startTime;</span>
+<span class="fc" id="L97">        this.nanoTimer = endTimeNano - startTimeNano;</span>
+<span class="fc" id="L98">    }</span>
     
     /**
      * Checks the edges between current Vertex and all it's 8 neighbour
@@ -117,72 +118,72 @@ public class Astar
     {
         //neighbor positions in all directions of graph
         //checking clockwise starting from above
-<span class="fc" id="L120">        int[] xPos = {-1, -1, 0, 1, 1, 1, 0, -1};</span>
-<span class="fc" id="L121">        int[] yPos = {0, 1, 1, 1, 0, -1, -1, -1};</span>
-<span class="fc" id="L122">        int cX = current.getX();</span>
-<span class="fc" id="L123">        int cY = current.getY();</span>
+<span class="fc" id="L121">        int[] xPos = {-1, -1, 0, 1, 1, 1, 0, -1};</span>
+<span class="fc" id="L122">        int[] yPos = {0, 1, 1, 1, 0, -1, -1, -1};</span>
+<span class="fc" id="L123">        int cX = current.getX();</span>
+<span class="fc" id="L124">        int cY = current.getY();</span>
         Vertex neighbor;
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">        for(int i = 0; i &lt; xPos.length; i++)</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for(int i = 0; i &lt; xPos.length; i++)</span>
         {
-<span class="fc" id="L128">            int nX = current.getX() + xPos[i]; //neighbor x coordinate</span>
-<span class="fc" id="L129">            int nY = current.getY() + yPos[i]; //neighbor y coordinate</span>
+<span class="fc" id="L129">            int nX = current.getX() + xPos[i]; //neighbor x coordinate</span>
+<span class="fc" id="L130">            int nY = current.getY() + yPos[i]; //neighbor y coordinate</span>
             
             //if neighbor vertex is not out of graph bounds realx the edges
-<span class="fc bfc" id="L132" title="All 10 branches covered.">            if((nX &gt;= 0 &amp;&amp; nY &gt;= 0) &amp;&amp; (nX &lt; graph.length &amp;&amp; nY &lt; graph[cX].length) &amp;&amp; graph[nX][nY] != null)</span>
+<span class="fc bfc" id="L133" title="All 10 branches covered.">            if((nX &gt;= 0 &amp;&amp; nY &gt;= 0) &amp;&amp; (nX &lt; graph.length &amp;&amp; nY &lt; graph[cX].length) &amp;&amp; graph[nX][nY] != null)</span>
             {
-<span class="fc" id="L134">                neighbor = graph[nX][nY];</span>
-<span class="fc bfc" id="L135" title="All 2 branches covered.">                if(!s.contains(neighbor))</span>
+<span class="fc" id="L135">                neighbor = graph[nX][nY];</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">                if(!s.contains(neighbor))</span>
                 {
                     //update heuristic value
-<span class="fc" id="L138">                    neighbor.setHeuristic(end, diagonalWeight, hvWeight);</span>
-<span class="fc" id="L139">                    neighbor.tie(); //used to narrow down the searched area</span>
+<span class="fc" id="L139">                    neighbor.setHeuristic(end, diagonalWeight, hvWeight);</span>
+<span class="fc" id="L140">                    neighbor.tie(); //used to narrow down the searched area</span>
                     //weigh is 1 if neighbor vertex is above, below,
                     //left or right to the current vertex
-<span class="fc bfc" id="L142" title="All 4 branches covered.">                    if(cX == nX || cY == nY)</span>
+<span class="fc bfc" id="L143" title="All 4 branches covered.">                    if(cX == nX || cY == nY)</span>
                     {
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">                        if(neighbor.equals(end))</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">                        if(neighbor.equals(end))</span>
                         {
-<span class="nc" id="L146">                            neighbor.setDistance(current.getDistance() + hvWeight);</span>
-<span class="nc" id="L147">                            neighbor.setParent(current);</span>
+<span class="nc" id="L147">                            neighbor.setDistance(current.getDistance() + hvWeight);</span>
+<span class="nc" id="L148">                            neighbor.setParent(current);</span>
                             //printRoute(neighbor); //print route
-<span class="nc" id="L149">                            endFound = true;</span>
-<span class="nc" id="L150">                            break;</span>
+<span class="nc" id="L150">                            endFound = true;</span>
+<span class="nc" id="L151">                            break;</span>
                         }
-<span class="fc bfc" id="L152" title="All 2 branches covered.">                        else if((current.getDistance() + neighbor.getHeurictic()) &lt; neighbor.getFCost())</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">                        else if((current.getDistance() + neighbor.getHeurictic()) &lt; neighbor.getFCost())</span>
                         {
-<span class="fc" id="L154">                            neighbor.setDistance(current.getDistance() + hvWeight);</span>
-<span class="fc" id="L155">                            neighbor.setParent(current);</span>
-<span class="fc" id="L156">                            neighbor.setFCost(current.getDistance());</span>
-<span class="fc" id="L157">                            mpq.add(neighbor);</span>
-<span class="fc" id="L158">                            neighbor.setMarker(2); //Marked as visited Vertex</span>
+<span class="fc" id="L155">                            neighbor.setDistance(current.getDistance() + hvWeight);</span>
+<span class="fc" id="L156">                            neighbor.setParent(current);</span>
+<span class="fc" id="L157">                            neighbor.setFCost(current.getDistance());</span>
+<span class="fc" id="L158">                            mpq.add(neighbor);</span>
+<span class="fc" id="L159">                            neighbor.setMarker(2); //Marked as visited Vertex</span>
                         }
                     }
                     //weight is sqrt(2) if neighbor vertex is located
                     //diagonally to current vertex
                     else
                     {
-<span class="fc bfc" id="L165" title="All 2 branches covered.">                        if(neighbor.equals(end))</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">                        if(neighbor.equals(end))</span>
                         {
-<span class="fc" id="L167">                            neighbor.setDistance(current.getDistance() + diagonalWeight);</span>
-<span class="fc" id="L168">                            neighbor.setParent(current);</span>
+<span class="fc" id="L168">                            neighbor.setDistance(current.getDistance() + diagonalWeight);</span>
+<span class="fc" id="L169">                            neighbor.setParent(current);</span>
                             //printRoute(neighbor); //print route
-<span class="fc" id="L170">                            endFound = true;</span>
-<span class="fc" id="L171">                            break;</span>
+<span class="fc" id="L171">                            endFound = true;</span>
+<span class="fc" id="L172">                            break;</span>
                         }
-<span class="fc bfc" id="L173" title="All 2 branches covered.">                        else if((current.getDistance() + neighbor.getHeurictic()) &lt; neighbor.getFCost())</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">                        else if((current.getDistance() + neighbor.getHeurictic()) &lt; neighbor.getFCost())</span>
                         {
-<span class="fc" id="L175">                            neighbor.setDistance(current.getDistance() + diagonalWeight);</span>
-<span class="fc" id="L176">                            neighbor.setParent(current);</span>
-<span class="fc" id="L177">                            neighbor.setFCost(current.getDistance());</span>
-<span class="fc" id="L178">                            mpq.add(neighbor);</span>
-<span class="fc" id="L179">                            neighbor.setMarker(2); //Marked as visited Vertex</span>
+<span class="fc" id="L176">                            neighbor.setDistance(current.getDistance() + diagonalWeight);</span>
+<span class="fc" id="L177">                            neighbor.setParent(current);</span>
+<span class="fc" id="L178">                            neighbor.setFCost(current.getDistance());</span>
+<span class="fc" id="L179">                            mpq.add(neighbor);</span>
+<span class="fc" id="L180">                            neighbor.setMarker(2); //Marked as visited Vertex</span>
                         }
                     }
                 }
             }
         }
-<span class="fc" id="L185">    } </span>
+<span class="fc" id="L186">    } </span>
     
     /**
      * Prints the route from end Vertex to start Vertex by recursively
@@ -193,11 +194,11 @@ public class Astar
     private void printRoute(Vertex v)
     {
         //System.out.print(v.coordinates());
-<span class="nc bnc" id="L196" title="All 2 branches missed.">        if(v.hasParent())</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if(v.hasParent())</span>
         {
-<span class="nc" id="L198">            printRoute(v.getParent());</span>
+<span class="nc" id="L199">            printRoute(v.getParent());</span>
         }
-<span class="nc" id="L200">    }</span>
+<span class="nc" id="L201">    }</span>
     
     /**
      * Method to get specific Vertex from this class.
@@ -210,7 +211,7 @@ public class Astar
      */
     public Vertex getVertex(int x, int y)
     {
-<span class="nc" id="L213">        return this.graph[x][y];</span>
+<span class="nc" id="L214">        return this.graph[x][y];</span>
     } 
     
     /**
@@ -220,7 +221,7 @@ public class Astar
      */
     public boolean endFound()
     {
-<span class="fc" id="L223">        return this.endFound;</span>
+<span class="fc" id="L224">        return this.endFound;</span>
     }
     
     /**
@@ -230,12 +231,12 @@ public class Astar
      */
     public long getTimer()
     {
-<span class="nc" id="L233">        return this.timer;</span>
+<span class="nc" id="L234">        return this.timer;</span>
     }
     
     public long getNanoTimer()
     {
-<span class="nc" id="L238">        return this.nanoTimer;</span>
+<span class="nc" id="L239">        return this.nanoTimer;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

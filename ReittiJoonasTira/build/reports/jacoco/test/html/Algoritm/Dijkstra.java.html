@@ -51,26 +51,26 @@ public class Dijkstra
 <span class="fc" id="L51">        this.s = new AlgoSet(map.length*2, map[0].length*2);</span>
 <span class="fc" id="L52">        endFound = false;</span>
 <span class="fc" id="L53">        this.graph = map;</span>
-<span class="fc" id="L54">        long startTime = System.currentTimeMillis();</span>
         
-<span class="fc" id="L56">        start.setDistance(0); //set start Vertex dinstance to 0</span>
-<span class="fc" id="L57">        mpq.add(start);</span>
+<span class="fc" id="L55">        start.setDistance(0); //set start Vertex dinstance to 0</span>
+<span class="fc" id="L56">        mpq.add(start);</span>
         
         //Setting distance to 99 999 to all objects except start object
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        for(Vertex[] row : graph)</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for(Vertex[] row : graph)</span>
         {
-<span class="fc bfc" id="L62" title="All 2 branches covered.">            for(int i = 0; i &lt; row.length; i++)</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            for(int i = 0; i &lt; row.length; i++)</span>
             {
-<span class="fc bfc" id="L64" title="All 2 branches covered.">                if(row[i] != null)</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">                if(row[i] != null)</span>
                 {
-<span class="fc bfc" id="L66" title="All 2 branches covered.">                    if(!row[i].equals(start))</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">                    if(!row[i].equals(start))</span>
                     {
-<span class="fc" id="L68">                        row[i].setDistance(maxValue);</span>
+<span class="fc" id="L67">                        row[i].setDistance(maxValue);</span>
                     }
                 }
             }
         }
         
+<span class="fc" id="L73">        long startTime = System.currentTimeMillis();</span>
         //remove vertex with minimum priority untill destination Vertex is found
 <span class="fc bfc" id="L75" title="All 4 branches covered.">        while(!mpq.isEmpty() &amp;&amp; endFound == false)</span>
         {

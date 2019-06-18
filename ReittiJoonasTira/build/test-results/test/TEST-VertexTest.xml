@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="VertexTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2019-06-18T08:50:19" hostname="SwagaDagaMasta" time="0.003">
+<testsuite name="VertexTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2019-06-18T14:14:40" hostname="SwagaDagaMasta" time="0.008">
   <properties/>
-  <testcase name="toStringTest" classname="VertexTest" time="0.0"/>
-  <testcase name="heuristicsTest" classname="VertexTest" time="0.0"/>
-  <testcase name="setMarkerTest" classname="VertexTest" time="0.0"/>
+  <testcase name="setMarkerTest" classname="VertexTest" time="0.001"/>
   <testcase name="setDistanceTest" classname="VertexTest" time="0.0"/>
-  <testcase name="setFCostTest" classname="VertexTest" time="0.001"/>
+  <testcase name="toStringTest" classname="VertexTest" time="0.001"/>
+  <testcase name="setFCostTest" classname="VertexTest" time="0.0"/>
   <testcase name="setParentTest" classname="VertexTest" time="0.0"/>
+  <testcase name="heuristicsTest" classname="VertexTest" time="0.0"/>
   <testcase name="constructorSetCorrectValues" classname="VertexTest" time="0.0"/>
   <testcase name="coordinatesMethodTest" classname="VertexTest" time="0.0"/>
-  <testcase name="parseMarkerMethodTest" classname="VertexTest" time="0.0"/>
+  <testcase name="parseMarkerMethodTest" classname="VertexTest" time="0.001"/>
   <testcase name="setCoordinatesTest" classname="VertexTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
