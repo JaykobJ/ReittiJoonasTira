@@ -5,7 +5,7 @@ Pää fokuksena tässä testissä on algoritmin suoritusaika kun kartan koko kas
 Dijkstra ja A* algoritmien suorituskykyä on testattu erisuuruisilla syötteillä. Testauksessa on otettu huomioon syötetyn kartan koko solmuina (V^2) sekä algoritmin toiminta-aika (lopetus aika (ms) - aloitus aika (ms)). Testissä karttojen solumäärää tuplataan ja algoritmit etsii nopeimman polun 20 kertaa jonka jälkeen tuloksista otetaan keskiarvo (tulosten summa / tulosten määrä). Karttoina on käytetty esteettömiä karttoja eli kaikki solmut ovat potentiaalisia solmuja jossa algoritmit voivat käydä. Oletuksena on, että algoritmiet löytävät tässä kartassa saman pituisen reitin. Aloituspisteeksi on otettu kartan keskipiste ja päätepisteeksi äärimmäisin piste kartan lopusta (pituus-1, pituus-1). 
 
 Koska A* on optimoitu nopeuteen verrataan myös reittien pituutta. Esteettömässä testissä reitin pituutta ei huomioida, koska se on sama molemmissa algoritmeissa. Reitin pituuteen tulee kuitenkin eroja jos karttaan lisätään esteitä. Projektin suunnitteluvaiheessa tämä on otettu huomioon sillä A* algoritmissa painotettiin enemmän nopeutta ja reitinetsintä alueen pitämistä pienenä.
-Kuvaajia on luotu 3 kappaletta. 1) vertailtu algoritmien suorituskykyä. 2) ja 3) kuvattu algoritmien suorituskykyä kuvaajan avulla. Kuvaajassa 2) ja 3) on pirretty myös lineaarinen ja eksponentiaalinen kasvu katkoviivoin.
+Kuvaajia on luotu 3 kappaletta. 1) vertailtu algoritmien suorituskykyä. 2) ja 3) kuvattu algoritmien suorituskykyä kuvaajan avulla. 
 
 ![](/dokumentaatio/kuvat/esteet%C3%B6n%20kartta/MapNoObstacleTable.PNG)
 
